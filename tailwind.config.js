@@ -1,45 +1,73 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    './src/pages/**/*.{js,ts,jsx,tsx}',
-    './src/components/**/*.{js,ts,jsx,tsx}',
-    './src/contexts/**/*.{js,ts,jsx,tsx}',
-    './src/app/**/*.{js,ts,jsx,tsx}',
-  ],
-  theme: {
-    extend: {
-      colors: {
-        background: 'rgb(var(--background) / <alpha-value>)',
-        foreground: 'rgba(var(--foreground) / <alpha-value>)',
-        card: 'rgba(var(--card) / <alpha-value>)',
-        'card-foreground': 'rgba(var(--card-foreground) / <alpha-value>)',
-        popover: 'rgba(var(--popover) / <alpha-value>)',
-        'popover-foreground': 'rgba(var(--popover-foreground) / <alpha-value>)',
-        primary: 'rgba(var(--primary) / <alpha-value>)',
-        'primary-foreground': 'rgba(var(--primary-foreground) / <alpha-value>)',
-        'primary-accent': 'rgba(var(--primary-accent) / <alpha-value>)',
-        secondary: 'rgba(var(--secondary) / <alpha-value>)',
-        'secondary-foreground': 'rgba(var(--secondary-foreground) / <alpha-value>)',
-        'secondary-accent': 'rgba(var(--secondary-accent) / <alpha-value>)',
-        muted: 'rgba(var(--muted) / <alpha-value>)',
-        'muted-foreground': 'rgba(var(--muted-foreground) / <alpha-value>)',
-        accent: 'rgba(var(--accent) / <alpha-value>)',
-        'accent-foreground': 'rgba(var(--accent-foreground) / <alpha-value>)',
-        success: 'rgba(var(--success) / <alpha-value>)',
-        'success-foreground': 'rgba(var(--success-foreground) / <alpha-value>)',
-        warning: 'rgba(var(--warning) / <alpha-value>)',
-        'warning-foreground': 'rgba(var(--warning-foreground) / <alpha-value>)',
-        destructive: 'rgba(var(--destructive) / <alpha-value>)',
-        'destructive-foreground': 'rgba(var(--destructive-foreground) / <alpha-value>)',
-        border: 'rgba(var(--border) / <alpha-value>)',
-        input: 'rgba(var(--input) / <alpha-value>)',
-      },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-      },
-    },
-  },
-  darkMode: 'class',
-  plugins: [],
+	content: ["./src/**/*.{ts,tsx}"],
+	theme: {
+		container: {
+			center: true,
+			padding: "2rem",
+			screens: {
+				"2xl": "1400px",
+			},
+		},
+		extend: {
+			colors: {
+				main: "hsl(var(--main))",
+				danger: "hsl(var(--danger))",
+
+				border: "hsl(var(--border))",
+				input: "hsl(var(--input))",
+				ring: "hsl(var(--ring))",
+				background: "hsl(var(--background))",
+				foreground: "hsl(var(--foreground))",
+				primary: {
+					DEFAULT: "hsl(var(--primary))",
+					foreground: "hsl(var(--primary-foreground))",
+				},
+				secondary: {
+					DEFAULT: "hsl(var(--secondary))",
+					foreground: "hsl(var(--secondary-foreground))",
+				},
+				destructive: {
+					DEFAULT: "hsl(var(--destructive))",
+					foreground: "hsl(var(--destructive-foreground))",
+				},
+				muted: {
+					DEFAULT: "hsl(var(--muted))",
+					foreground: "hsl(var(--muted-foreground))",
+				},
+				accent: {
+					DEFAULT: "hsl(var(--accent))",
+					foreground: "hsl(var(--accent-foreground))",
+				},
+				popover: {
+					DEFAULT: "hsl(var(--popover))",
+					foreground: "hsl(var(--popover-foreground))",
+				},
+				card: {
+					DEFAULT: "hsl(var(--card))",
+					foreground: "hsl(var(--card-foreground))",
+				},
+			},
+			borderRadius: {
+				lg: "var(--radius)",
+				md: "calc(var(--radius) - 2px)",
+				sm: "calc(var(--radius) - 4px)",
+			},
+			keyframes: {
+				"accordion-down": {
+					from: { height: 0 },
+					to: { height: "var(--radix-accordion-content-height)" },
+				},
+				"accordion-up": {
+					from: { height: "var(--radix-accordion-content-height)" },
+					to: { height: 0 },
+				},
+			},
+			animation: {
+				"accordion-down": "accordion-down 0.2s ease-out",
+				"accordion-up": "accordion-up 0.2s ease-out",
+			},
+		},
+	},
+	plugins: [require("tailwindcss-animate")],
 };

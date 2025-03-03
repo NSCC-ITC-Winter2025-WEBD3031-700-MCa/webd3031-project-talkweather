@@ -4,82 +4,127 @@
 
 @layer base {
   :root {
-    --background: 254 253 255;
-    --foreground: 16 0 35;
-    --card: 253 250 255;
-    --card-foreground: 60 0 119;
-    --popover: 251 251 254;
-    --popover-foreground: 34 0 74;
-    --primary: 136 0 202;
-    --primary-foreground: 250 240 255;
-    --primary-accent: 163 0 241;
-    --secondary: 237 238 243;
-    --secondary-foreground: 77 81 104;
-    --secondary-accent: 225 227 238;
-    --muted: 204 208 222;
-    --muted-foreground: 77 81 104;
-    --accent: 125 11 239;
-    --accent-foreground: 249 242 255;
-    --success: 244 252 246;
-    --success-foreground: 65 176 87;
-    --warning: 255 253 238;
-    --warning-foreground: 244 197 25;
-    --destructive: 255 246 250;
-    --destructive-foreground: 246 100 157;
-    --border: 241 224 253;
-    --input: 238 239 249;
-    --ring: 1rem;
-  }
-  .dark {
-    --background: 16 0 35;
-    --foreground: 251 243 255;
-    --card: 35 27 56;
-    --card-foreground: 231 206 255;
-    --popover: 24 31 41;
-    --popover-foreground: 251 251 254;
-    --primary: 177 58 255;
-    --primary-foreground: 250 240 255;
-    --primary-accent: 169 38 255;
-    --secondary: 40 42 54;
-    --secondary-foreground: 204 208 222;
-    --secondary-accent: 50 52 66;
-    --muted: 77 81 104;
-    --muted-foreground: 204 208 222;
-    --accent: 94 0 156;
-    --accent-foreground: 249 242 255;
-    --success: 8 113 29;
-    --success-foreground: 221 242 225;
-    --warning: 244 197 25;
-    --warning-foreground: 255 253 238;
-    --destructive: 246 100 157;
-    --destructive-foreground: 255 246 250;
-    --border: 57 49 75;
-    --input: 57 49 75;
+    --main: 347 100% 40%;
+    --danger: 11 85% 49%;
+
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 0 0% 92.1%;
+    --secondary-foreground: 0 0% 9%;
+
+    --accent: 0 0% 63.9% / 0.03;
+    --accent-foreground: 0 0% 9%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --ring: 0 0% 63.9%;
+
+    --radius: 0.5rem;
   }
 
-  /* width */
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
 
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: rgb(var(--background));
-  }
+      --main: 347 73% 48%;
+      --danger: 11 85% 55%;
 
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: rgb(var(--muted));
-  }
+      --background: 0 0% 5.9%;
+      --foreground: 0 0% 88%;
 
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: rgb(var(--muted-foreground));
+      --muted: 0 0% 14.9%;
+      --muted-foreground: 0 0% 63.9%;
+
+      --popover: 0 0% 3.9%;
+      --popover-foreground: 0 0% 98%;
+
+      --card: 0 0% 3.9%;
+      --card-foreground: 0 0% 98%;
+
+      --border: 0 0% 17.9%;
+      --input: 0 0% 14.9%;
+
+      --primary: 0 0% 98%;
+      --primary-foreground: 0 0% 9%;
+
+      --secondary: 0 0% 14.9%;
+      --secondary-foreground: 0 0% 98%;
+
+      --accent: 0 0% 14.9%;
+      --accent-foreground: 0 0% 98%;
+
+      --destructive: 0 62.8% 30.6%;
+      --destructive-foreground: 0 85.7% 97.3%;
+
+      --ring: 0 0% 14.9%;
+    }
   }
 }
 
-@layer components {
-  .link {
-    @apply rounded-sm decoration-blue-500 decoration-2 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500;
+@layer base {
+  * {
+    @apply border-border;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  scrollbar-gutter: stable;
+  overflow: auto;
+}
+
+@keyframes vibrate {
+  0% {
+    transform: translateX(0);
+  }
+
+  16.67% {
+    transform: translateX(-2px);
+  }
+
+  33.34% {
+    transform: translateX(0);
+  }
+
+  50.01% {
+    transform: translateX(2px);
+  }
+
+  66.68% {
+    transform: translateX(0);
+  }
+
+  83.35% {
+    transform: translateX(-2px);
+  }
+
+  100.0% {
+    transform: translateX(0);
   }
 }

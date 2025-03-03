@@ -1,80 +1,111 @@
-# Munia
+# Vibe 🚀
 
-A responsive and accessible full stack social media web app.
+Vibe is a social media web app created using Next.js 14, Neon's serverless driver, and Clerk. <br> Deployed at: [vibe.ambe.dev](https://vibe.ambe.dev/).
 
-## Preview 🎬
+![vibe](https://github.com/ammarmbe/vibe/assets/117791580/abeaff9b-621e-4c25-b82b-45dd996dfed2)
 
-[![Watch the showcase](https://norcio-dot-dev-public-files.s3.us-east-1.amazonaws.com/munia/showcase-thumbnail.png)](https://norcio-dot-dev-public-files.s3.us-east-1.amazonaws.com/munia/showcase.mp4)
+## Features
 
-## Features ✨
+- **User registration and login:** users can create an account and login to the website.
+- **Creating, reading, updating, and deleting posts:** users can create posts, read posts from other users, edit or delete their own posts, **and mention others in their posts (new)**.
+- **Comments and likes:** users can like and comment on posts, **and add reactions (new)**.
+- **Profile page:** users can see their own and others' profile page.
+- **Following other users:** users can follow others and see their posts in the "Following" feed.
+- **Notifications:** users get notified when someone likes their post or follows them.
+- **Responsive design**: the website is built with a beautiful mobile first design, which also works on larger desktop monitors.
 
-- Email and OAuth 2.0 login (Github, Google and Facebook)
-- Users can update their info, profile photo and cover photo
-- Create, update and delete posts, comments and replies
-- Like and unlike posts, comments and replies
-- Images and videos can be added to posts
-- Drag and drop sorting of images and videos when creating and editing a post
-- Hashtags can be added to posts
-- Users can @ mention other users in their posts, comments and replies
-- Bidirectional infinite scrolling of posts
-- Follow and unfollow other users
-- Search users with filters
-- Display, search and filter a user's followers and following list
-- Activity logging and notifications
-- Gallery of user's uploaded photos and videos
-- Full-page image and videos slider
-- Accessible components
-- Fully responsive design
-- Dark and light themes
+## Setup Locally
 
-> [!NOTE]  
-> This project is a work in progress, it still contains bugs and will constantly be updated to stay up-to-date with the latest framework changes.
+1. Run the following command to copy the application's code.
 
-## Tech Stack 🛠️
+   ```
+   git clone https://github.com/ammarmbe/vibe.git
+   ```
 
-- [TypeScript](https://www.typescriptlang.org/)
-- [React](https://react.dev/)
-- [Next.js](https://nextjs.org/)
-- [NextAuth.js](https://next-auth.js.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [React Query](https://tanstack.com/query/latest/docs/react/overview)
-- [React Aria](https://react-spectrum.adobe.com/react-aria/getting-started.html)
-- [React Hook Form](https://react-hook-form.com/)
-- [Zod](https://zod.dev/)
-- [Prisma](https://www.prisma.io/)
-- [AWS S3](https://aws.amazon.com/s3/)
-- [AWS SES](https://aws.amazon.com/ses/)
+2. Create a `.env.local` file in the root directory.
+3. Create a [Neon](http://neon.tech/) account, create a new database and add the `DATABASE_URL` to the `.env.local` file.
+4. Setup [Clerk](https://clerk.com), add the `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` to the `.env.local` file.
+5. Add the following to the `.env.local` file:
 
-## About this project
+   ```
+   NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
+   NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+   NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+   NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/
+   NEXT_PUBLIC_URL=http://localhost:3000
+   ```
 
-This project is an open source portfolio project that explores how can a social media app be built with Next.js.
+6. Run the following command, and add `NEXT_PUBLIC_VAPID_PUBLIC_KEY` and `VAPID_PRIVATE_KEY` to the `.env.local` file (for push notifications).
 
-It utilizes the following Next.js features:
+   ```
+   web-push generate-vapid-keys --json
+   ```
 
-- routing
-- static and dynamic rendering
-- server and client components
-- nested layouts
-- route handlers
-- middleware
-- font optimizations
-- dynamic metadata
+7. Run the queries in the [Database Schema](#database-schema) in your database.
+8. Run `pnpm install` then `pnpm dev` in the root directory to start a local development server.
 
-Due to the highly dynamic nature of social media apps, most data fetching and mutations are done on the client-side using React Query.
+## Tech Stack
 
-React Query simplifies the implementation of features that would have been challenging and inefficient with Next.js's server components and server actions. These features include bidirectional infinite scrolling, optimistic updates, client-side data caching, client-side loading states, and more.
+Next.js, Neon's serverless driver (PostgreSQL), Clerk, React Query, TailwindCSS. <br> _Shadcn/ui is used for the popover and dialog components and the CSS variables._
 
-## Accessibility
+Deployed on Vercel and Neon.
 
-The UI components are built with React Aria's accessibility hooks, assuring accessibility across different platforms.
+## Database Schema
 
-## Deployment on EC2
+```sql
+CREATE TABLE follower_relation (
+    follower character varying(200) NOT NULL,
+    following character varying(200) NOT NULL
+);
 
-Follow these steps to deploy Munia on an EC2 instance.
+CREATE TABLE likes (
+    userid character varying(200) NOT NULL,
+    postid integer NOT NULL,
+    type character varying(10)
+);
 
-1. Set up a PostgreSQL database and copy its connection URL into `.env`.
-2. Set up a client application for each OAuth provider (Github, Google and Facebook) and copy the client id's and client secrets into `.env.local`.
-3. Run `npm install`
-4. Run `npm run prisma:deploy`
-5. Run `npm run prisma:seed`
-6. Run `npm run pm2` (or `npm run build` and then `npm run start` if you're not using PM2). You can modify the port specified in the `pm2` script depending on your server configuration.
+CREATE TABLE notifications (
+    id SERIAL NOT NULL,
+    type character varying(200) NOT NULL,
+    notifier character varying(200) NOT NULL,
+    notified character varying(200) NOT NULL,
+    read boolean DEFAULT false NOT NULL,
+    createdat timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    postid integer
+);
+
+CREATE TABLE posts (
+    id SERIAL NOT NULL,
+    userid character varying(200) NOT NULL,
+    parentnanoid character varying(12),
+    nanoid character varying(12) NOT NULL,
+    createdat timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    deleted boolean DEFAULT false NOT NULL,
+    edited boolean DEFAULT false NOT NULL,
+    content text NOT NULL
+);
+
+CREATE TABLE reposts (
+    userid character varying(200) NOT NULL,
+    postid integer NOT NULL,
+    createdat timestamp with time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE subscriptions (
+    userid character varying(200) NOT NULL,
+    subscription json NOT NULL
+);
+
+CREATE TABLE users (
+    id character varying(200) NOT NULL,
+    name character varying(250) NOT NULL,
+    bio character varying(250),
+    username character varying(32),
+    email character varying(250) NOT NULL,
+    image character varying(250) NOT NULL
+);
+```
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
