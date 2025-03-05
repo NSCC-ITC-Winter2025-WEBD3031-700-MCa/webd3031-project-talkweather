@@ -16,10 +16,10 @@ model FollowerRelation {
 }
 
 model Like {
-  userId   String
-  postId   Int
+  userid   String
+  postid   Int
   type     String?
-  @@id([userId, postId])
+  @@id([userid, postid])
 
   @@map("likes")
 }
@@ -30,18 +30,18 @@ model Notification {
   notifier  String
   notified  String
   read      Boolean  @default(false)
-  createdAt DateTime @default(now())
-  postId    Int?
+  createdat DateTime @default(now())
+  postid    Int?
 
   @@map("notifications")
 }
 
 model Post {
   id          Int      @id @default(autoincrement())
-  userId      String
-  parentNanoid String?
+  userid      String
+  parentnanoid String?
   nanoid      String
-  createdAt   DateTime @default(now())
+  createdat   DateTime @default(now())
   deleted     Boolean  @default(false)
   edited      Boolean  @default(false)
   content     String
@@ -50,20 +50,20 @@ model Post {
 }
 
 model Repost {
-  userId    String
-  postId    Int
-  createdAt DateTime @default(now())
+  userid    String
+  postid    Int
+  createdat DateTime @default(now())
 
-  @@id([userId, postId])
+  @@id([userid, postid])
   @@map("reposts")
 }
 
 model Subscription {
-  userId      String
+  userid      String
   subscription Json
 
-  @@id([userId]) // Composite primary key or you can use @unique for individual fields
-  @@map("subscriptions") // Maps the table name to the model
+  @@id([userid]) 
+  @@map("subscriptions") 
 }
 
 model User {
