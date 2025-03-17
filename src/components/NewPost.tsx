@@ -20,14 +20,12 @@ export default function NewPost() {
       selected: boolean;
     }[]
   >([]);
-  const [postContent, setPostContent] = useState("");
 
   const [inputFocus, setInputFocus] = useState(false);
 
   const notificationMutation = useMutation({
     mutationFn: async (d: string) => {
       const [username, data] = JSON.parse(d);
-
       await fetch(
         `/api/notification/mentioned?username=${username}&postid=${data}&type=post`,
         { method: "POST" },
@@ -36,28 +34,27 @@ export default function NewPost() {
   });
 
   const postMutation = useMutation({
-    mutationFn: async (nanoid: string) => {
-      const id = await fetch("/api/post", {
+    mutationFn: async ({ content, nanoid }: { content: string; nanoid: string }) => {
+      console.log("Mutation started with nanoid:", nanoid);
+
+      const response = await fetch("/api/post", {
         method: "POST",
-        body: JSON.stringify({
-          content: postContent,
-          nanoid,
-        }),
+        body: JSON.stringify({ content, nanoid }),
       });
 
-      return {
-        id: await id.json(),
-      };
+      const result = await response.json();
+      console.log("Mutation finished", result);
+
+      return { id: result };
     },
-    onMutate: (nanoid) => {
+    onMutate: ({ content, nanoid }) => {
       const name: string[] = [];
 
-      user?.firstName && name.push(user.firstName);
-      user?.lastName && name.push(user.lastName);
+      if (user?.firstName) name.push(user.firstName);
+      if (user?.lastName) name.push(user.lastName);
 
-      if (!name.length) {
-        user?.emailAddresses[0].emailAddress.split("@")[0] &&
-          name.push(user?.emailAddresses[0].emailAddress.split("@")[0]);
+      if (!name.length && user?.emailAddresses[0]?.emailAddress) {
+        name.push(user.emailAddresses[0].emailAddress.split("@")[0]);
       }
 
       queryClient.setQueryData(
@@ -68,9 +65,9 @@ export default function NewPost() {
               pages: [
                 [
                   {
-                    postid: "0", // will be invalidated
-                    nanoid: nanoid,
-                    content: postContent,
+                    postid: "0",
+                    nanoid,
+                    content,
                     createdat: (Date.now() / 1000).toString(),
                     parentnanoid: null,
                     name: name.join(" "),
@@ -101,25 +98,43 @@ export default function NewPost() {
       setValue([]);
     },
     onSettled: () => {
-      queryClient.invalidateQueries(["homeFeed", "Home"]);
+      queryClient.invalidateQueries({ queryKey: ["homeFeed", "Home"] });
     },
     onSuccess: (data) => {
-      // send a notification for all users mentioned in the post
       const mentionedUsers = value
         .filter((v) => v.mention)
         .map((v) => v.sanitized.slice(1));
 
       for (const username of mentionedUsers) {
-        if (user?.username !== username)
+        if (user?.username !== username) {
           notificationMutation.mutate(JSON.stringify([username, data.id]));
+        }
       }
     },
+    onError: (error) => {
+      console.error("Error creating post:", error); // Logs the error
+    },
   });
+  
+
+  const handlePostClick = () => {
+    console.log("Button clicked!");
+    const content = value
+      .map((v) => v.unsanitized)
+      .join(" ")
+      .trim();
+
+    if (!content) return;
+
+    console.log("Triggering mutation with content:", content);
+
+    postMutation.mutate({ content, nanoid: nanoid(12) });
+  };
 
   return (
     <form
       className={`grid grid-cols-[1fr,auto] grid-rows-[auto,auto,1fr] gap-x-2 mb-2.5 hover:shadow-none items-center transition-colors shadow-sm rounded-md px-2 py-2 pl-2.5 border ${
-        inputFocus ? "dark:border-foreground/25 border-ring" : null
+        inputFocus ? "dark:border-foreground/25 border-ring" : ""
       }`}
     >
       <Input
@@ -132,24 +147,9 @@ export default function NewPost() {
       <button
         type="button"
         aria-label="Post"
-        onClick={() => {
-          if (
-            !value
-              .map((v) => v.unsanitized)
-              .join(" ")
-              .trim()
-          )
-            return;
-          setPostContent(
-            value
-              .map((v) => v.unsanitized)
-              .join(" ")
-              .trim(),
-          );
-          postMutation.mutate(nanoid(12));
-        }}
+        onClick={handlePostClick}
         disabled={
-          postMutation.isLoading ||
+          postMutation.isPending ||
           value.map((v) => v.sanitized).join(" ").length > 512
         }
         className="order-2 border disabled:!opacity-50 rounded-sm text-sm px-2 py-1 hover:bg-accent hover:border-ring transition-colors relative top-[0px] self-start flex items-end justify-center gap-1 leading-[1.2]"
@@ -161,12 +161,10 @@ export default function NewPost() {
       </button>
       <p
         className={`order-3 transition-colors text-xs text-right p-1 w-[43px] ${(() => {
-          if (value.map((v) => v.sanitized).join(" ").length < 412)
-            return "hidden";
-          if (value.map((v) => v.sanitized).join(" ").length < 481)
-            return "text-muted-foreground";
-          if (value.map((v) => v.sanitized).join(" ").length < 512)
-            return "text-yellow-500/90";
+          const length = value.map((v) => v.sanitized).join(" ").length;
+          if (length < 412) return "hidden";
+          if (length < 481) return "text-muted-foreground";
+          if (length < 512) return "text-yellow-500/90";
           return "text-danger";
         })()}`}
       >

@@ -17,6 +17,7 @@ export function Comments({ post }: { post: Post }) {
     isLoading: commentsLoading,
   } = useInfiniteQuery({
     queryKey: ["comments", post.nanoid],
+    initialPageParam: null,
     queryFn: async ({ pageParam = 2147483647 }) => {
       const res = await fetch(
         `/api/posts/parentnanoid?postid=${pageParam}&parentnanoid=${post.nanoid}`,

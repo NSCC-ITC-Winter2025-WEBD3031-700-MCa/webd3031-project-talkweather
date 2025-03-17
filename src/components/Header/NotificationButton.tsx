@@ -36,6 +36,7 @@ export default function NotificationButton() {
       return undefined;
     },
     enabled: Boolean(userId),
+    initialPageParam: null,
   });
 
   const readNotifications = useMutation({
@@ -60,7 +61,7 @@ export default function NotificationButton() {
       }, 1000);
     },
     onError: () => {
-      queryClient.invalidateQueries(["notifications"]);
+      queryClient.invalidateQueries({queryKey: ["notifications"]});
     },
   });
 
