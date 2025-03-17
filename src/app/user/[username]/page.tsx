@@ -10,26 +10,73 @@ interface Props {
     username: string;
   };
 }
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const user = await (
-    await fetch(
-      `${process.env.NEXT_PUBLIC_URL}/api/user?username=${params.username}`,
-    )
-  ).json();
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_URL}/api/user?username=${params.username}`
+    );
 
-  return {
-    title: user.name ? `${user.name} – Vibe` : "Vibe",
-    description:
-      "Vibe is a social media web app all about connecting with people who share your interests, and it's the perfect place to share your thoughts, photos, and videos.",
-    metadataBase: new URL("https://vibe.ambe.dev"),
-    openGraph: {
-      description: user.bio
-        ? user.bio
-        : "Vibe is a social media web app all about connecting with people who share your interests, and it's the perfect place to share your thoughts, photos, and videos.",
-    },
-  };
+    // Handle non-OK responses
+    if (!response.ok) {
+      if (response.status === 404) {
+        console.error("User not found");
+        return {
+          title: "User Not Found – Vibe",
+          description:
+            "The requested user does not exist on Vibe. Discover and connect with others!",
+          metadataBase: new URL("https://vibe.ambe.dev"),
+          openGraph: {
+            description:
+              "The requested user does not exist on Vibe. Explore new connections!",
+          },
+        };
+      }
+      throw new Error(`API error: ${response.statusText}`);
+    }
+
+    // Handle empty response body
+    const responseBody = await response.text();
+    if (!responseBody) {
+      console.error("Empty response body from API");
+      return {
+        title: "Error – Vibe",
+        description: "User data could not be fetched. Please try again later.",
+        metadataBase: new URL("https://vibe.ambe.dev"),
+        openGraph: {
+          description: "Something went wrong while fetching user data. Please try again later.",
+        },
+      };
+    }
+
+    // Parse the JSON response body
+    const user = JSON.parse(responseBody);
+
+    return {
+      title: user.name ? `${user.name} – Vibe` : "Vibe",
+      description:
+        "Vibe is a social media web app all about connecting with people who share your interests, and it's the perfect place to share your thoughts, photos, and videos.",
+      metadataBase: new URL("https://vibe.ambe.dev"),
+      openGraph: {
+        description: user.bio
+          ? user.bio
+          : "Vibe is a social media web app all about connecting with people who share your interests, and it's the perfect place to share your thoughts, photos, and videos.",
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching user metadata:", error);
+    return {
+      title: "Error – Vibe",
+      description:
+        "Something went wrong while fetching user data. Please try again later.",
+      metadataBase: new URL("https://vibe.ambe.dev"),
+      openGraph: {
+        description:
+          "Something went wrong while fetching user data. Please try again later.",
+      },
+    };
+  }
 }
+
 
 export default async function Page({ params }: Props) {
   const queryClient = getQueryClient();
