@@ -15,25 +15,26 @@ export default async function Home({
   const { userId } = auth();
   const queryClient = getQueryClient();
 
-  queryClient.prefetchInfiniteQuery(
-    [
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: [
       "homeFeed",
       searchParams.feed === "Home" || searchParams.feed === "Following"
         ? searchParams.feed
         : "Home",
     ],
-    async ({ pageParam = 2147483647 }) => {
+    queryFn: async ({ pageParam = 2147483647 }) => {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_URL}/api/posts?postid=${pageParam}&feed=${
           searchParams.feed === "Home" || searchParams.feed === "Following"
             ? searchParams.feed
             : "Home"
-        }`,
+        }`
       );
       return res.json();
     },
-  );
-
+    initialPageParam: 2147483647, // ✅ Required for prefetching infinite queries
+  });
+  
   return (
     <main className="max-w-2xl h-full flex flex-col w-full mx-auto px-2.5">
       <Header
