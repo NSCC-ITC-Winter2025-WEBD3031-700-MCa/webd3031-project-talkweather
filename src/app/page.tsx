@@ -14,7 +14,6 @@ export default async function Home({
 }) {
   const { userId } = auth();
   const queryClient = getQueryClient();
-
   await queryClient.prefetchInfiniteQuery({
     queryKey: [
       "homeFeed",
@@ -30,9 +29,14 @@ export default async function Home({
             : "Home"
         }`
       );
+  
+      if (!res.ok) {
+        throw new Error(`API error: ${res.statusText}`);
+      }
+  
       return res.json();
     },
-    initialPageParam: 2147483647, // ✅ Required for prefetching infinite queries
+    initialPageParam: 2147483647, // ✅ Required for infinite queries
   });
   
   return (
