@@ -19,6 +19,7 @@ export default function Feed({ feed }: { feed: "Home" | "Following" }) {
       return undefined;
     },
     enabled: Boolean(feed),
+    initialPageParam: null,
   });
 
   if (isLoading)

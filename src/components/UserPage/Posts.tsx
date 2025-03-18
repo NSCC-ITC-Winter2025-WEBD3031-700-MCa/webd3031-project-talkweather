@@ -13,6 +13,7 @@ export default function Page({ userid }: { userid: string }) {
     isLoading: postsLoading,
   } = useInfiniteQuery({
     queryKey: ["userPosts", userid],
+    initialPageParam: null,
     queryFn: async ({ pageParam = 2147483647 }) => {
       const res = await fetch(
         `/api/posts/userid?userid=${userid}&postid=${pageParam}`,
