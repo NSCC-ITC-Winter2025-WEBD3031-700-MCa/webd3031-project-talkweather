@@ -1,11 +1,12 @@
+import dynamic from "next/dynamic";
+import { Suspense } from "react";
+import { auth } from "@clerk/nextjs/server";
+import getQueryClient from "@/lib/utils"; 
 import Feed from "@/components/Feed";
 import Header from "@/components/Header/Header";
 import Spinner from "@/components/Spinner";
+
 const NewPost = dynamic(() => import("@/components/NewPost"), { ssr: false });
-import getQueryClient from "@/lib/utils";
-import { auth } from "@clerk/nextjs/server";
-import dynamic from "next/dynamic";
-import { Suspense } from "react";
 
 export default async function Home({
   searchParams,
@@ -15,34 +16,24 @@ export default async function Home({
   const { userId } = auth();
   const queryClient = getQueryClient();
 
-  queryClient.prefetchInfiniteQuery(
-    [
-      "homeFeed",
-      searchParams.feed === "Home" || searchParams.feed === "Following"
-        ? searchParams.feed
-        : "Home",
-    ],
-    async ({ pageParam = 2147483647 }) => {
+  const feedType =
+    searchParams.feed === "Home" || searchParams.feed === "Following"
+      ? searchParams.feed
+      : "Home";
+
+  await queryClient.prefetchQuery({
+    queryKey: ["homeFeed", feedType],
+    queryFn: async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_URL}/api/posts?postid=${pageParam}&feed=${
-          searchParams.feed === "Home" || searchParams.feed === "Following"
-            ? searchParams.feed
-            : "Home"
-        }`,
+        `${process.env.NEXT_PUBLIC_URL}/api/posts?postid=2147483647&feed=${feedType}`
       );
       return res.json();
     },
-  );
+  });
 
   return (
     <main className="max-w-2xl h-full flex flex-col w-full mx-auto px-2.5">
-      <Header
-        feed={
-          searchParams.feed === "Home" || searchParams.feed === "Following"
-            ? searchParams.feed
-            : "Home"
-        }
-      />
+      <Header feed={feedType} />
       {userId && <NewPost />}
       <Suspense
         fallback={
@@ -51,13 +42,7 @@ export default async function Home({
           </div>
         }
       >
-        <Feed
-          feed={
-            searchParams.feed === "Home" || searchParams.feed === "Following"
-              ? searchParams.feed
-              : "Home"
-          }
-        />
+        <Feed feed={feedType} />
       </Suspense>
     </main>
   );
