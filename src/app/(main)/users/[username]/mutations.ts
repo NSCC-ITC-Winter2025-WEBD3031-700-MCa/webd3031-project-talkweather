@@ -13,11 +13,8 @@ import { PostPage } from "../../_components/for-you-posts";
 
 export function useEditProfileMutation() {
   const { toast } = useToast();
-
   const router = useRouter();
-
   const queryClient = useQueryClient();
-
   const { startUpload: startAvatarUpload } = useUploadThing("avatar");
 
   const mutation = useMutation({
@@ -36,14 +33,26 @@ export function useEditProfileMutation() {
     onSuccess: async ([editResponse, uploadResults]) => {
       const newAvatarUrl = uploadResults?.[0].serverData.avatarUrl || null;
 
-      const queryFilter: QueryFilters = { queryKey: ["posts"] };
+      // Define the query filter with a correctly typed predicate
+      const queryFilter: QueryFilters = {
+        queryKey: ["posts"],
+        predicate: (query) => {
+          const data = query.state.data as InfiniteData<PostPage, string | null> | undefined;
+          return data?.pages.some((page) =>
+            page.posts.some((post) => post.userId === editResponse.data.updatedUser.id)
+          ) ?? false;
+        },
+      };
 
+      // Cancel any ongoing queries matching the filter
       await queryClient.cancelQueries(queryFilter);
 
+      // Update the query data with the new profile information
       queryClient.setQueriesData<InfiniteData<PostPage, string | null>>(
-        queryFilter,
+        { queryKey: ["posts"] }, // Explicitly define the query key
         (oldData) => {
-          if (!oldData) return;
+          if (!oldData) return oldData; // Return oldData if it's undefined
+
           return {
             pageParams: oldData.pageParams,
             pages: oldData.pages.map((page) => ({
@@ -67,8 +76,10 @@ export function useEditProfileMutation() {
         }
       );
 
+      // Refresh the router to reflect the changes
       router.refresh();
 
+      // Show a success toast
       toast({
         description: "Profile updated successfully!",
       });
@@ -81,5 +92,6 @@ export function useEditProfileMutation() {
       });
     },
   });
+
   return mutation;
 }

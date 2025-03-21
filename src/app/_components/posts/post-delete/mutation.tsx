@@ -14,29 +14,38 @@ const useDeletePostMutation = () => {
   //toast trigger
   const { toast } = useToast();
 
-  //router for navifation
+  //router for navigation
   const router = useRouter();
 
   //pathname
   const pathname = usePathname();
 
-  //gettting query client
+  //getting query client
   const queryClient = useQueryClient();
 
   //Mutation for post Delete
   const mutation = useMutation({
     mutationFn: deletePost,
     onSuccess: async ({ deletedPost }) => {
+      // Define the query filter with a correctly typed predicate
       const queryFilter: QueryFilters = {
         queryKey: ["posts"],
+        predicate: (query) => {
+          const queryData = query.state.data as InfiniteData<PostPage, string | null> | undefined;
+          return queryData?.pages.some((page) =>
+            page.posts.some((post) => post.id === deletedPost.id)
+          ) ?? false;
+        },
       };
 
+      // Cancel any ongoing queries matching the filter
       await queryClient.cancelQueries(queryFilter);
 
+      // Update the query data with the new profile information
       queryClient.setQueriesData<InfiniteData<PostPage, string | null>>(
-        queryFilter,
+        { queryKey: ["posts"] }, // Explicitly define the query key
         (oldData) => {
-          if (!oldData) return;
+          if (!oldData) return oldData; // Return oldData if it's undefined
 
           return {
             pageParams: oldData.pageParams,
