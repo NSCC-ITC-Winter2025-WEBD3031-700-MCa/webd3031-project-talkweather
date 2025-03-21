@@ -1,31 +1,29 @@
-import { QueryClient } from "@tanstack/react-query";
 import { type ClassValue, clsx } from "clsx";
-import { cache } from "react";
+import { formatDistanceToNow, formatDate } from "date-fns";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function updateInputSize(input: HTMLElement | null) {
-  if (input == null) return;
-  input.style.height = "0px";
-  input.style.height = `${input.scrollHeight}px`;
-}
-
-const getQueryClient = cache(() => new QueryClient());
-export default getQueryClient;
-
-export const registerServiceWorker = async () => {
-  return navigator.serviceWorker.register("/service.js");
+export const formateRelativeDate = (from: Date) => {
+  const currentDate = new Date();
+  if (currentDate.getTime() - from.getTime() < 24 * 60 * 60 * 1000) {
+    return formatDistanceToNow(from, {
+      addSuffix: true,
+    });
+  } else {
+    if (currentDate.getFullYear() === from.getFullYear()) {
+      return formatDate(from, "MMM dd");
+    } else {
+      return formatDate(from, "MMM dd, yyyy");
+    }
+  }
 };
 
-export const saveSubscription = async (
-  subscription: PushSubscription,
-  userid: string,
-) => {
-  await fetch("/api/push", {
-    method: "POST",
-    body: JSON.stringify({ subscription, userid }),
-  });
+export const formatNumber = (number: number) => {
+  return Intl.NumberFormat("en-US", {
+    notation: "compact",
+    maximumFractionDigits: 1,
+  }).format(number);
 };

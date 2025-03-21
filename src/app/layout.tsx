@@ -1,50 +1,49 @@
+import type { Metadata } from "next";
+import { Poppins } from "next/font/google";
 import "./globals.css";
-import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
-import React from "react";
-import { Analytics } from "@vercel/analytics/react";
-import LoadingBar from "@/components/LoadingBar";
-import { ClerkProvider } from "@clerk/nextjs";
-import ReactQueryProvider from "../lib/ReactQueryProvider";
+import { ThemeProvider } from "./_providers/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
+import ReactQueryProvider from "./(main)/_providers/tanstack-query-provider";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
+import { ourFileRouter } from "./(server)/api/uploadthing/core";
 
-const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  title: "Vibe",
-  description:
-    "Vibe is a social media web app all about connecting with people who share your interests, and it's the perfect place to share your thoughts, photos, and videos.",
-  metadataBase: new URL("https://vibe.ambe.dev"),
-  keywords: ["social media", "web app", "vibe", "connect", "interests"],
-  appleWebApp: {
-    title: "Vibe",
-    capable: true,
-    statusBarStyle: "default",
+  title: {
+    template: "%s | srbook",
+    default: "srbook",
   },
-};
-
-export const viewport: Viewport = {
-  themeColor: "#0f0f0f",
+  description:
+    "The social media application called srbook build by shumail.dev for you",
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <html lang="en">
-      <ClerkProvider
-        appearance={{ variables: { colorPrimary: "#cf202f" } }}
-        publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
-      >
+      <body className={`${poppins.className} bg-gray-100 dark:bg-card`}>
+        <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
         <ReactQueryProvider>
-          <body className={inter.className}>
-            <LoadingBar />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
             {children}
-            <Analytics />
-          </body>
+            <Toaster />
+          </ThemeProvider>
         </ReactQueryProvider>
-      </ClerkProvider>
+      </body>
     </html>
   );
 }
