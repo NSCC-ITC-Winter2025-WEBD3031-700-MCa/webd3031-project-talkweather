@@ -1,78 +1,152 @@
-datasource db {
-  provider = "postgresql"
-  url      = "postgresql://TalkWeather:npg_KHtwTx8qz7Du@ep-proud-dew-a8uosi67-pooler.eastus2.azure.neon.tech/TalkWeather?sslmode=require"
-}
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
-model FollowerRelation {
-  follower  String
-  following String
-  @@id([follower, following])
-
-  @@map("follower_relation")
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-model Like {
-  userid   String
-  postid   Int
-  type     String?
-  @@id([userid, postid])
+model User {
+  id           String     @id @default(uuid())
+  username     String     @unique
+  displayName  String
+  email        String?    @unique
+  avatarUrl    String?
+  passwordHash String?
+  googleId     String?    @unique
+  bio          String?
+  sessions     Session[]
+  posts        Post[]
+  bookmarks    Bookmark[]
+  comments     Comment[]
+  followers    Follow[]   @relation("Followers") //users who are following this user
+  following    Follow[]   @relation("Following") //users who are followed by this user
+  likes        Like[]
 
-  @@map("likes")
+  createdAt            DateTime       @default(now())
+  receivedNotification Notification[] @relation("Recipient")
+  issuedNotification   Notification[] @relation("Issuer")
+
+  @@map("users")
 }
 
-model Notification {
-  id        Int      @id @default(autoincrement())
-  type      String
-  notifier  String
-  notified  String
-  read      Boolean  @default(false)
-  createdat DateTime @default(now())
-  postid    Int?
+model Session {
+  id        String   @id
+  userId    String
+  expiresAt DateTime
 
-  @@map("notifications")
+  user User @relation(references: [id], fields: [userId], onDelete: Cascade)
+
+  @@map("sessions")
 }
 
 model Post {
-  id          Int      @id @default(autoincrement())
-  userid      String
-  parentnanoid String?
-  nanoid      String
-  createdat   DateTime @default(now())
-  deleted     Boolean  @default(false)
-  edited      Boolean  @default(false)
-  content     String
+  id                  String         @id @default(uuid())
+  content             String
+  userId              String
+  user                User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  attachments         Media[]
+  likes               Like[]
+  bookmarks           Bookmark[]
+  comments            Comment[]
+  linkedNotifications Notification[]
+
+  createdAt DateTime @default(now())
 
   @@map("posts")
 }
 
-model Repost {
-  userid    String
-  postid    Int
-  createdat DateTime @default(now())
+model Media {
+  id     String    @id @default(uuid())
+  postId String?
+  Post   Post?     @relation(fields: [postId], references: [id], onDelete: SetNull)
+  type   MediaType
+  url    String
 
-  @@id([userid, postid])
-  @@map("reposts")
+  createdAt DateTime @default(now())
+
+  @@map("postmedia")
 }
 
-model Subscription {
-  userid      String
-  subscription Json
-
-  @@id([userid]) 
-  @@map("subscriptions") 
+enum MediaType {
+  IMAGE
+  VIDEO
 }
 
-model User {
-  id       String @id
-  name     String
-  bio      String?
-  username String?
-  email    String
-  image    String
+model Follow {
+  id          String @id @default(uuid())
+  followerId  String
+  follower    User   @relation("Following", fields: [followerId], references: [id], onDelete: Cascade)
+  followingId String
+  following   User   @relation("Followers", fields: [followingId], references: [id], onDelete: Cascade)
 
-  @@map("users")
+  @@unique([followerId, followingId])
+  @@map("follows")
+}
+
+model Comment {
+  id      String @id @default(uuid())
+  content String
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  postId  String
+  post    Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@map("comments")
+}
+
+model Like {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  postId String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, postId])
+  @@map("likes")
+}
+
+model Bookmark {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  postId String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, postId])
+  @@map("bookmarks")
+}
+
+model Notification {
+  id          String           @id @default(uuid())
+  recipientId String
+  recipient   User             @relation("Recipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  issuerId    String
+  issuer      User             @relation("Issuer", fields: [issuerId], references: [id], onDelete: Cascade)
+  postId      String?
+  post        Post?            @relation(fields: [postId], references: [id], onDelete: Cascade)
+  type        NotificationType
+  isRead      Boolean          @default(false)
+  content     String?
+  createdAt   DateTime         @default(now())
+
+  @@map("notifications")
+}
+
+enum NotificationType {
+  LIKE
+  COMMENT
+  FOLLOW
 }

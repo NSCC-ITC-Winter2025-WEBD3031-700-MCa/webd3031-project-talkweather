@@ -1,7 +1,0 @@
-# Block all crawlers for /api
-User-agent: *
-Disallow: /api
-
-# Allow all crawlers
-User-agent: *
-Allow: /

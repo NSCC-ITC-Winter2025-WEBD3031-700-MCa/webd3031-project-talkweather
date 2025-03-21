@@ -1,66 +1,126 @@
-export type Post = {
-  postid: string;
-  nanoid: string;
-  content: string;
-  createdat: string;
-  parentnanoid: string | null;
+import { Prisma } from "@prisma/client";
 
-  name: string;
-  username: string;
-  image: string;
-  userid: string;
+export function getUserDataSelect(loggedInUserId: string) {
+  return {
+    id: true,
+    username: true,
+    displayName: true,
+    avatarUrl: true,
+    bio: true,
+    createdAt: true,
+    followers: {
+      where: {
+        followerId: loggedInUserId,
+      },
+      select: {
+        followerId: true,
+      },
+    },
+    _count: {
+      select: {
+        followers: true,
+        posts: true,
+      },
+    },
+  } satisfies Prisma.UserSelect;
+}
 
-  likecount: string;
-  crycount: string;
-  laughcount: string;
-  heartcount: string;
-  surprisecount: string;
-  commentcount: string;
-  userlikestatus: "like" | "cry" | "laugh" | "heart" | "surprise" | null;
-  userrepoststatus: string;
+export type userData = Prisma.UserGetPayload<{
+  select: ReturnType<typeof getUserDataSelect>;
+}>;
 
-  deleted: string;
-  edited: string;
-};
+export function getPostDataInclude(loggedInUserId: string) {
+  return {
+    user: {
+      select: getUserDataSelect(loggedInUserId),
+    },
+    attachments: true,
+    likes: {
+      where: {
+        userId: loggedInUserId,
+      },
+      select: {
+        userId: true,
+      },
+    },
+    bookmarks: {
+      where: {
+        userId: loggedInUserId,
+      },
+      select: {
+        userId: true,
+      },
+    },
+    _count: {
+      select: {
+        likes: true,
+        bookmarks: true,
+        comments: true,
+      },
+    },
+  } satisfies Prisma.PostInclude;
+}
 
-export type User = {
-  id: string;
-  name: string;
-  bio: string;
-  username: string;
-  image: string;
-  followers: string;
-  followedbyuser: string;
-  followsuser: string;
-};
+export type postData = Prisma.PostGetPayload<{
+  include: ReturnType<typeof getPostDataInclude>;
+}>;
 
-export type Notification = {
-  id: string;
-  type:
-    | "likedPost.surprise"
-    | "likedPost.laugh"
-    | "likedPost.heart"
-    | "likedPost.cry"
-    | "likedPost.like"
-    | "commentedOnPost"
-    | "followedUser"
-    | "mentioned.post"
-    | "mentioned.comment"
-    | "reposted";
-  createdat: string;
-  notifier: string;
-  postid: string;
-  notifierimage: string;
-  notifierusername: string;
-  notifiername: string;
-  content: string;
-  read: string;
-  nanoid: string;
-  deleted: string;
-};
+export function getCommentDataInclude(loggedInUserId: string) {
+  return {
+    user: {
+      select: getUserDataSelect(loggedInUserId),
+    },
+  } satisfies Prisma.CommentInclude;
+}
 
-export interface Repost extends Post {
-  repostername: string;
-  reposterusername: string;
-  repostcreatedat: string;
+export type commentData = Prisma.CommentGetPayload<{
+  include: ReturnType<typeof getCommentDataInclude>;
+}>;
+
+export interface commentPage {
+  comments: commentData[];
+  previousCursor: string | null;
+}
+
+export interface followerInformation {
+  followers: number;
+  isFollowedByUser: boolean;
+}
+
+export interface likeInformation {
+  likes: number;
+  isLikedByUser: boolean;
+}
+
+export interface bookmarkInformation {
+  bookmarks: number;
+  isBookmarkedByUser: boolean;
+}
+
+export const notificationsInclude = {
+  issuer: {
+    select: {
+      username: true,
+      avatarUrl: true,
+      displayName: true,
+    },
+  },
+  post: {
+    select: {
+      content: true,
+    },
+  },
+} satisfies Prisma.NotificationInclude;
+
+export type notificationData = Prisma.NotificationGetPayload<{
+  include: typeof notificationsInclude;
+}>;
+
+export interface notificationsPage {
+  notifications: notificationData[];
+  nextCursor: string | null;
+}
+
+export interface NotificationCountInfo {
+  unreadCount: number;
 }
