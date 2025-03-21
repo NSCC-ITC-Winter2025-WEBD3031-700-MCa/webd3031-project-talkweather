@@ -82,43 +82,42 @@ const PostEditor = ({}: Props) => {
     onSuccess: async ({ newPost }) => {
       editor?.commands.clearContent();
       resetMediaUploads();
-      const queryFilter = {
+
+      const queryFilter: QueryFilters = {
         queryKey: ["posts"],
-        predicate(query) {
-          return (
-            query.queryKey.includes("for-you") ||
-            (query.queryKey.includes("user-posts") &&
-              query.queryKey.includes(user.id))
-          );
+        predicate: (query) => {
+          const queryData = query.state.data as InfiniteData<PostPage, string | null> | undefined;
+          return ((query.queryKey.includes("for-you")) || (query.queryKey.includes("user-posts") && query.queryKey.includes(user.id))); 
         },
-      } satisfies QueryFilters;
+      };
 
       await queryClient.cancelQueries(queryFilter);
 
       queryClient.setQueriesData<InfiniteData<PostPage, string | null>>(
-        queryFilter,
+        { queryKey: ["posts"] }, 
         (oldData) => {
-          const firstPage = oldData?.pages[0];
+          if (!oldData) return oldData; 
 
-          if (firstPage) {
-            return {
-              pageParams: oldData.pageParams,
-              pages: [
-                {
-                  posts: [newPost, ...firstPage.posts],
-                  nextCursor: firstPage.nextCursor,
-                },
-                ...oldData.pages.slice(1),
-              ],
-            };
-          }
+          const firstPage = oldData.pages[0];
+
+          return {
+            pageParams: oldData.pageParams,
+            pages: [
+              {
+                posts: [newPost, ...firstPage.posts],
+                nextCursor: firstPage.nextCursor,
+              },
+              ...oldData.pages.slice(1),
+            ],
+          };
         }
       );
 
       queryClient.invalidateQueries({
         queryKey: queryFilter.queryKey,
-        predicate(query) {
-          return queryFilter.predicate(query) && !query.state.data;
+        predicate: (query) => {
+          
+          return queryFilter.predicate ? queryFilter.predicate(query) && !query.state.data : true;
         },
       });
 
@@ -145,7 +144,7 @@ const PostEditor = ({}: Props) => {
     });
   };
 
-  // Memoizing the onPaste function
+  
   const onPaste = useCallback(
     async (e: ClipboardEvent<HTMLElement>) => {
       const files = Array.from(e.clipboardData.items)
@@ -255,7 +254,6 @@ const AddAttachmentsButton = ({
       <Button
         variant={"ghost"}
         size={"icon"}
-        // disabled={disabled}
         className="text-primary hover:text-primary"
         onClick={() => fileInputRef.current?.click()}
       >
@@ -311,7 +309,7 @@ interface AttachemntsPrevProps {
   attachment: Attachement;
   onRemoveClick: () => void;
 }
-// AttachmentPreview.tsx
+
 const AttachmentPreview = memo(
   ({
     attachment: { file, isUploading, mediaId },

@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/dialog";
 import { useRef } from "react";
 import { Cropper, ReactCropperElement } from "react-cropper";
-import "cropperjs/dist/cropper.css";
 
 interface Props {
   src: string;

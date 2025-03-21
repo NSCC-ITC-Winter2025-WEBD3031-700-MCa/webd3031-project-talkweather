@@ -5,7 +5,6 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
-import { PostPage } from "@/app/(main)/_components/for-you-posts";
 import { useToast } from "@/components/ui/use-toast";
 import { usePathname, useRouter } from "next/navigation";
 import { deleteComment } from "./actions";
@@ -28,16 +27,26 @@ const useDeleteCommentMutation = () => {
   const mutation = useMutation({
     mutationFn: deleteComment,
     onSuccess: async ({ data }) => {
+      // Define the query filter with a correctly typed predicate
       const queryFilter: QueryFilters = {
         queryKey: ["comments", data.comment.postId],
+        predicate: (query) => {
+          // Rename the variable to avoid shadowing the outer `data`
+          const queryData = query.state.data as InfiniteData<commentPage, string | null> | undefined;
+          return queryData?.pages.some((page) =>
+            page.comments.some((comment) => comment.id === data.comment.id)
+          ) ?? false;
+        },
       };
-
+      
+      // Cancel any ongoing queries matching the filter
       await queryClient.cancelQueries(queryFilter);
 
+      // Update the query data with the new profile information
       queryClient.setQueriesData<InfiniteData<commentPage, string | null>>(
-        queryFilter,
+        { queryKey: ["comments", data.comment.postId] }, // Explicitly define the query key
         (oldData) => {
-          if (!oldData) return;
+          if (!oldData) return oldData; // Return oldData if it's undefined
 
           return {
             pageParams: oldData.pageParams,
