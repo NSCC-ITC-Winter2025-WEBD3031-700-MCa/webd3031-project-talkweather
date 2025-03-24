@@ -14,7 +14,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Login",
   description:
-    "Login to srbook account to access your personalized dashboard and connect with like-minded individuals.",
+    "Login to Talk Weather account to access your personalized dashboard and connect with like-minded individuals.",
 };
 
 interface Props {}

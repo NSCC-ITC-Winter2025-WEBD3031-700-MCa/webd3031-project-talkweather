@@ -25,7 +25,7 @@ const Comment = ({ comment }: Props) => {
             src={comment.user.avatarUrl || ""}
             alt={comment.user.displayName}
           />
-          <AvatarFallback>SR</AvatarFallback>
+          <AvatarFallback>TW</AvatarFallback>
         </Avatar>
       </UserTooltip>
       {/* Content */}

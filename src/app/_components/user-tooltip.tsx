@@ -42,7 +42,7 @@ export default function UserTooltip({ children, user }: UserTooltipProps) {
                     src={user.avatarUrl || ""}
                     alt={user.displayName}
                   />
-                  <AvatarFallback>SR</AvatarFallback>
+                  <AvatarFallback>TW</AvatarFallback>
                 </Avatar>
               </Link>
               {loggedInUser.id !== user.id && (
