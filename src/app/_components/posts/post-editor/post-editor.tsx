@@ -168,7 +168,7 @@ const PostEditor = ({}: Props) => {
       <div className="flex items-start justify-start gap-3">
         <Avatar className="max-h-[40px] min-h-[40px] min-w-[40px] max-w-[40px]">
           <AvatarImage src={user.avatarUrl || ""} alt={user.displayName} />
-          <AvatarFallback>TW</AvatarFallback>
+          <AvatarFallback>HW</AvatarFallback>
         </Avatar>
         <div {...rootProp} className={`w-full`}>
           <EditorContent

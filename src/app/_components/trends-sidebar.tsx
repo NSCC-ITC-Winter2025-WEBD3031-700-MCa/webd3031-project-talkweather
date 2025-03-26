@@ -64,7 +64,7 @@ const ShowNotFollowingList = async () => {
                     src={user.avatarUrl || ""}
                     alt={user.displayName}
                   />
-                  <AvatarFallback>TW</AvatarFallback>
+                  <AvatarFallback>HW</AvatarFallback>
                 </Avatar>
                 <div>
                   <p className="line-clamp-1 break-all font-[500] leading-[1.3] hover:underline">

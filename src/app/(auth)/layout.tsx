@@ -20,7 +20,7 @@ export default async function AuthLayout({
               href="/"
               className="font-mono text-3xl font-extrabold leading-[1]"
             >
-              <span className="text-primary">TALK</span>WEATHER
+              <span className="text-primary">HALI</span>WEATHER
             </Link>
           </h1>
           <p className="mt-1 w-full text-start text-sm">
