@@ -36,7 +36,7 @@ const Post = ({ post }: Props) => {
                   src={post.user.avatarUrl || ""}
                   alt={post.user.displayName}
                 />
-                <AvatarFallback>TW</AvatarFallback>
+                <AvatarFallback>HW</AvatarFallback>
               </Avatar>
             </Link>
           </UserTooltip>

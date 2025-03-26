@@ -14,7 +14,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Register",
   description:
-    "Register a Talk Weather account to access your personalized dashboard and connect with like-minded individuals.",
+    "Register a HaliWeather account to access your personalized dashboard and connect with like-minded individuals.",
 };
 
 interface Props {}

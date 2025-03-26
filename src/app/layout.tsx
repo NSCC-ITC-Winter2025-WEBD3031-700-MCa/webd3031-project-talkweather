@@ -16,11 +16,11 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Talk Weather",
-    default: "Talk Weather",
+    template: "%s | HaliWeather",
+    default: "HaliWeather",
   },
   description:
-    "The social media application called Talk Weather build by the NSCC Capstone TalkWeather Team",
+    "The social media application called HaliWeather build by the NSCC Capstone HaliWeather Team",
 };
 
 export default function RootLayout({

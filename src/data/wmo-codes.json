@@ -1,0 +1,278 @@
+{
+    "0": {
+      "description": "Sunny",
+      "image": "http://openweathermap.org/img/wn/01d@2x.png"
+    },
+    "1": {
+      "description": "Mainly Sunny",
+      "image": "http://openweathermap.org/img/wn/01d@2x.png"
+    },
+    "2": {
+      "description": "Partly Cloudy",
+      "image": "http://openweathermap.org/img/wn/02d@2x.png"
+    },
+    "3": {
+      "description": "Cloudy",
+      "image": "http://openweathermap.org/img/wn/03d@2x.png"
+    },
+    "4": {
+      "description": "Visibility reduced by smoke",
+      "image": "http://openweathermap.org/img/wn/50d@2x.png"
+    },
+    "5": {
+      "description": "Haze",
+      "image": "http://openweathermap.org/img/wn/50d@2x.png"
+    },
+    "6": {
+      "description": "Widespread dust in suspension",
+      "image": "http://openweathermap.org/img/wn/50d@2x.png"
+    },
+    "7": {
+      "description": "Dust or sand raised by wind",
+      "image": "http://openweathermap.org/img/wn/50d@2x.png"
+    },
+    "8": {
+      "description": "Well developed dust/sand whirls",
+      "image": "http://openweathermap.org/img/wn/50d@2x.png"
+    },
+    "9": {
+      "description": "Duststorm or sandstorm within sight",
+      "image": "http://openweathermap.org/img/wn/50d@2x.png"
+    },
+    "10": {
+      "description": "Mist",
+      "image": "http://openweathermap.org/img/wn/50d@2x.png"
+    },
+    "11": {
+      "description": "Patches of shallow fog",
+      "image": "http://openweathermap.org/img/wn/50d@2x.png"
+    },
+    "12": {
+      "description": "More or less continuous shallow fog",
+      "image": "http://openweathermap.org/img/wn/50d@2x.png"
+    },
+    "13": {
+      "description": "Lightning visible, no thunder heard",
+      "image": "http://openweathermap.org/img/wn/11d@2x.png"
+    },
+    "14": {
+      "description": "Precipitation within sight, not reaching ground",
+      "image": "http://openweathermap.org/img/wn/09d@2x.png"
+    },
+    "15": {
+      "description": "Precipitation within sight, reaching ground >5km away",
+      "image": "http://openweathermap.org/img/wn/09d@2x.png"
+    },
+    "16": {
+      "description": "Precipitation within sight, reaching ground nearby",
+      "image": "http://openweathermap.org/img/wn/09d@2x.png"
+    },
+    "17": {
+      "description": "Thunderstorm but no precipitation",
+      "image": "http://openweathermap.org/img/wn/11d@2x.png"
+    },
+    "18": {
+      "description": "Squalls within sight",
+      "image": "http://openweathermap.org/img/wn/50d@2x.png"
+    },
+    "19": {
+      "description": "Funnel cloud(s) within sight",
+      "image": "http://openweathermap.org/img/wn/50d@2x.png"
+    },
+    "20": {
+      "description": "Drizzle (not freezing) or snow grains",
+      "image": "http://openweathermap.org/img/wn/09d@2x.png"
+    },
+    "21": {
+      "description": "Rain (not freezing)",
+      "image": "http://openweathermap.org/img/wn/10d@2x.png"
+    },
+    "22": {
+      "description": "Snow",
+      "image": "http://openweathermap.org/img/wn/13d@2x.png"
+    },
+    "23": {
+      "description": "Rain and snow or ice pellets",
+      "image": "http://openweathermap.org/img/wn/13d@2x.png"
+    },
+    "24": {
+      "description": "Freezing drizzle or freezing rain",
+      "image": "http://openweathermap.org/img/wn/13d@2x.png"
+    },
+    "25": {
+      "description": "Shower(s) of rain",
+      "image": "http://openweathermap.org/img/wn/09d@2x.png"
+    },
+    "26": {
+      "description": "Shower(s) of snow or rain and snow",
+      "image": "http://openweathermap.org/img/wn/13d@2x.png"
+    },
+    "27": {
+      "description": "Shower(s) of hail or rain and hail",
+      "image": "http://openweathermap.org/img/wn/11d@2x.png"
+    },
+    "28": {
+      "description": "Fog or ice fog",
+      "image": "http://openweathermap.org/img/wn/50d@2x.png"
+    },
+    "29": {
+      "description": "Thunderstorm (with or without precipitation)",
+      "image": "http://openweathermap.org/img/wn/11d@2x.png"
+    },
+    "30": {
+      "description": "Slight or moderate duststorm/sandstorm",
+      "image": "http://openweathermap.org/img/wn/50d@2x.png"
+    },
+    "31": {
+      "description": "Slight or moderate duststorm/sandstorm (decreasing)",
+      "image": "http://openweathermap.org/img/wn/50d@2x.png"
+    },
+    "32": {
+      "description": "Slight or moderate duststorm/sandstorm (no change)",
+      "image": "http://openweathermap.org/img/wn/50d@2x.png"
+    },
+    "33": {
+      "description": "Severe duststorm/sandstorm",
+      "image": "http://openweathermap.org/img/wn/50d@2x.png"
+    },
+    "34": {
+      "description": "Severe duststorm/sandstorm (decreasing)",
+      "image": "http://openweathermap.org/img/wn/50d@2x.png"
+    },
+    "35": {
+      "description": "Severe duststorm/sandstorm (no change)",
+      "image": "http://openweathermap.org/img/wn/50d@2x.png"
+    },
+    "36": {
+      "description": "Slight/moderate drifting snow",
+      "image": "http://openweathermap.org/img/wn/13d@2x.png"
+    },
+    "37": {
+      "description": "Heavy drifting snow",
+      "image": "http://openweathermap.org/img/wn/13d@2x.png"
+    },
+    "38": {
+      "description": "Slight/moderate blowing snow",
+      "image": "http://openweathermap.org/img/wn/13d@2x.png"
+    },
+    "39": {
+      "description": "Heavy blowing snow",
+      "image": "http://openweathermap.org/img/wn/13d@2x.png"
+    },
+    "40": {
+      "description": "Fog or ice fog at a distance",
+      "image": "http://openweathermap.org/img/wn/50d@2x.png"
+    },
+    "41": {
+      "description": "Fog or ice fog in patches",
+      "image": "http://openweathermap.org/img/wn/50d@2x.png"
+    },
+    "42": {
+      "description": "Fog or ice fog (thinner than recently)",
+      "image": "http://openweathermap.org/img/wn/50d@2x.png"
+    },
+    "43": {
+      "description": "Fog or ice fog (no change)",
+      "image": "http://openweathermap.org/img/wn/50d@2x.png"
+    },
+    "44": {
+      "description": "Fog or ice fog (thicker than recently)",
+      "image": "http://openweathermap.org/img/wn/50d@2x.png"
+    },
+    "45": {
+      "description": "Foggy",
+      "image": "http://openweathermap.org/img/wn/50d@2x.png"
+    },
+    "48": {
+      "description": "Rime Fog",
+      "image": "http://openweathermap.org/img/wn/50d@2x.png"
+    },
+    "51": {
+      "description": "Light Drizzle",
+      "image": "http://openweathermap.org/img/wn/09d@2x.png"
+    },
+    "53": {
+      "description": "Drizzle",
+      "image": "http://openweathermap.org/img/wn/09d@2x.png"
+    },
+    "55": {
+      "description": "Heavy Drizzle",
+      "image": "http://openweathermap.org/img/wn/09d@2x.png"
+    },
+    "56": {
+      "description": "Light Freezing Drizzle",
+      "image": "http://openweathermap.org/img/wn/09d@2x.png"
+    },
+    "57": {
+      "description": "Freezing Drizzle",
+      "image": "http://openweathermap.org/img/wn/09d@2x.png"
+    },
+    "61": {
+      "description": "Light Rain",
+      "image": "http://openweathermap.org/img/wn/10d@2x.png"
+    },
+    "63": {
+      "description": "Rain",
+      "image": "http://openweathermap.org/img/wn/10d@2x.png"
+    },
+    "65": {
+      "description": "Heavy Rain",
+      "image": "http://openweathermap.org/img/wn/10d@2x.png"
+    },
+    "66": {
+      "description": "Light Freezing Rain",
+      "image": "http://openweathermap.org/img/wn/13d@2x.png"
+    },
+    "67": {
+      "description": "Freezing Rain",
+      "image": "http://openweathermap.org/img/wn/13d@2x.png"
+    },
+    "71": {
+      "description": "Light Snow",
+      "image": "http://openweathermap.org/img/wn/13d@2x.png"
+    },
+    "73": {
+      "description": "Snow",
+      "image": "http://openweathermap.org/img/wn/13d@2x.png"
+    },
+    "75": {
+      "description": "Heavy Snow",
+      "image": "http://openweathermap.org/img/wn/13d@2x.png"
+    },
+    "77": {
+      "description": "Snow Grains",
+      "image": "http://openweathermap.org/img/wn/13d@2x.png"
+    },
+    "80": {
+      "description": "Light Showers",
+      "image": "http://openweathermap.org/img/wn/09d@2x.png"
+    },
+    "81": {
+      "description": "Showers",
+      "image": "http://openweathermap.org/img/wn/09d@2x.png"
+    },
+    "82": {
+      "description": "Heavy Showers",
+      "image": "http://openweathermap.org/img/wn/09d@2x.png"
+    },
+    "85": {
+      "description": "Light Snow Showers",
+      "image": "http://openweathermap.org/img/wn/13d@2x.png"
+    },
+    "86": {
+      "description": "Snow Showers",
+      "image": "http://openweathermap.org/img/wn/13d@2x.png"
+    },
+    "95": {
+      "description": "Thunderstorm",
+      "image": "http://openweathermap.org/img/wn/11d@2x.png"
+    },
+    "96": {
+      "description": "Light Thunderstorms With Hail",
+      "image": "http://openweathermap.org/img/wn/11d@2x.png"
+    },
+    "99": {
+      "description": "Thunderstorm With Hail",
+      "image": "http://openweathermap.org/img/wn/11d@2x.png"
+    }
+  }

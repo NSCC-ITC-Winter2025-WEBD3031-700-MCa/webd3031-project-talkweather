@@ -51,7 +51,7 @@ const Notification = ({ notification }: Props) => {
               src={notification.issuer.avatarUrl || ""}
               alt={notification.issuer.displayName}
             />
-            <AvatarFallback>TW</AvatarFallback>
+            <AvatarFallback>HW</AvatarFallback>
           </Avatar>
           <div>
             <Link
