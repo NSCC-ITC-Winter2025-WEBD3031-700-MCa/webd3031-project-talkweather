@@ -17,6 +17,9 @@ import BookMarkButton from "@/app/(main)/_components/bookmark-button";
 import Comments from "../comments/comments";
 import { MessageSquare } from "lucide-react";
 import CreateComment from "@/app/_components/comments/create-comment";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { getWeatherInfo } from "@/lib/weather";
+
 interface Props {
   post: postData;
 }
@@ -41,12 +44,38 @@ const Post = ({ post }: Props) => {
             </Link>
           </UserTooltip>
           <div className="flex flex-col items-start">
-            <Link
-              href={`/users/${post.user.username}`}
-              className="block font-medium leading-[1.4] hover:underline"
-            >
-              {post.user.displayName}
-            </Link>
+            <div className="flex items-center">
+              <Link
+                href={`/users/${post.user.username}`}
+                className="block font-medium leading-[1.4] hover:underline"
+              >
+                {post.user.displayName}
+              </Link>
+              {/* Weather display */}
+              {post.weatherCode ? (
+                <div className="flex items-center ml-2 gap-1">
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <img 
+                        src={getWeatherInfo(post.weatherCode)?.image || ''}
+                        alt="Weather icon"
+                        className="w-5 h-5"
+                      />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      {getWeatherInfo(post.weatherCode)?.description || 'Weather'}
+                    </TooltipContent>
+                  </Tooltip>
+                  <span className="text-sm text-muted-foreground">
+                    {post.temperature}
+                  </span>
+                </div>
+              ) : (
+                <span className="text-xs text-muted-foreground ml-2">
+                  No weather data
+                </span>
+              )}
+            </div>
             <Link
               href={`/posts/${post.id}`}
               className="block text-[13px] text-muted-foreground hover:underline"

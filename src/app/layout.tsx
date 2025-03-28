@@ -7,6 +7,7 @@ import ReactQueryProvider from "./(main)/_providers/tanstack-query-provider";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "./(server)/api/uploadthing/core";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -31,18 +32,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.className} bg-gray-100 dark:bg-card`}>
-        <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
-        <ReactQueryProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-            <Toaster />
-          </ThemeProvider>
-        </ReactQueryProvider>
+        <TooltipProvider>
+          <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
+          <ReactQueryProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+              <Toaster />
+            </ThemeProvider>
+          </ReactQueryProvider>
+        </TooltipProvider>
       </body>
     </html>
   );

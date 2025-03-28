@@ -61,8 +61,20 @@ export function getPostDataInclude(loggedInUserId: string) {
   } satisfies Prisma.PostInclude;
 }
 
+export function getPostDataSelect(loggedInUserId: string) {
+  return {
+    ...getPostDataInclude(loggedInUserId),
+    content: true,
+    id: true,
+    createdAt: true,
+    userId: true,
+    weatherCode: true,
+    temperature: true
+  } satisfies Prisma.PostSelect;
+}
+
 export type postData = Prisma.PostGetPayload<{
-  include: ReturnType<typeof getPostDataInclude>;
+  select: ReturnType<typeof getPostDataSelect>;
 }>;
 
 export function getCommentDataInclude(loggedInUserId: string) {
