@@ -57,6 +57,8 @@ model Post {
   likes               Like[]
   bookmarks           Bookmark[]
   comments            Comment[]
+  weatherCode         Int?
+  temperature         String?
   linkedNotifications Notification[]
 
   createdAt DateTime @default(now())

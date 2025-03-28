@@ -27,6 +27,8 @@ const getPostData = cache(async (postId: string, loggedInUserId: string) => {
       id: true,
       createdAt: true,
       userId: true,
+      weatherCode: true,
+      temperature: true 
     },
   });
 
