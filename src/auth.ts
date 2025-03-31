@@ -21,6 +21,7 @@ export const lucia = new Lucia(adapter, {
       displayName: databaseUserAttributes.displayName,
       avatarUrl: databaseUserAttributes.avatarUrl,
       googleId: databaseUserAttributes.googleId,
+      role: databaseUserAttributes.role,
     };
   },
 });
@@ -66,6 +67,7 @@ interface databaseUserAttributes {
   displayName: string;
   avatarUrl: string | null;
   googleId: string | null;
+  role: string;
 }
 
 declare module "lucia" {
@@ -74,3 +76,8 @@ declare module "lucia" {
     DatabaseUserAttributes: databaseUserAttributes;
   }
 }
+
+export const isAdmin = async () => {
+  const { user } = await validateRequest();
+  return user?.role === "ADMIN";
+};
