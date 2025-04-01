@@ -9,6 +9,10 @@ import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "./(server)/api/uploadthing/core";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
+import { Analytics } from '@vercel/analytics/next';
+ 
+
+
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   subsets: ["latin"],
@@ -43,10 +47,13 @@ export default function RootLayout({
             >
               {children}
               <Toaster />
+              <Analytics /> 
             </ThemeProvider>
           </ReactQueryProvider>
         </TooltipProvider>
       </body>
     </html>
   );
+
+
 }
