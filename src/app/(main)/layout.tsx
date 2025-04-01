@@ -21,11 +21,7 @@ export default async function MainLayout({
         <div className="w-full flex justify-between items-center px-5 py-3 bg-card shadow-md">
           <Navbar />
           {/* Long Oval Button for Pricing */}
-          <Link href="/pricing">
-            <button className="px-4 py-1 rounded-full bg-blue-600 text-white text-lg font-semibold shadow-md hover:bg-blue-700 transition">
-              Upgrade
-            </button>
-          </Link>
+          
         </div>
 
         <div className="flex w-full max-w-7xl grow gap-5 px-5 py-5 xl:px-0">
