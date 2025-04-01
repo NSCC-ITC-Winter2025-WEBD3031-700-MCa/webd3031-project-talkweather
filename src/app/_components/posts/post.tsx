@@ -86,7 +86,7 @@ const Post = ({ post }: Props) => {
           </div>
         </div>
         {/* Post actions  */}
-        {post.userId === user.id && (
+        {(post.userId === user.id || user?.role === "ADMIN")&& (
           <div className="flex items-center justify-center opacity-0 transition group-hover/post:opacity-[1]">
             {<MoreOptionPostButton post={post} />}
           </div>

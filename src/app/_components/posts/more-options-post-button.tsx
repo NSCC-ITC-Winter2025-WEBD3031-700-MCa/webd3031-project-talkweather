@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { validateRequest } from "@/auth";
 import {
   DropdownMenu,
   DropdownMenuContent,

@@ -30,6 +30,7 @@ model User {
   followers    Follow[]   @relation("Followers") //users who are following this user
   following    Follow[]   @relation("Following") //users who are followed by this user
   likes        Like[]
+  role         String     @default("USER")
 
   createdAt            DateTime       @default(now())
   receivedNotification Notification[] @relation("Recipient")
