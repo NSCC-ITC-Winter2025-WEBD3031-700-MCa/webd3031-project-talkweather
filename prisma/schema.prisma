@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch"]
@@ -27,10 +24,14 @@ model User {
   posts        Post[]
   bookmarks    Bookmark[]
   comments     Comment[]
-  followers    Follow[]   @relation("Followers") //users who are following this user
-  following    Follow[]   @relation("Following") //users who are followed by this user
+  followers    Follow[]   @relation("Followers")
+  following    Follow[]   @relation("Following")
   likes        Like[]
+  payments     Payment[]
   role         String     @default("USER")
+  isVerified   Boolean    @default(false)
+  verifiedAt   DateTime?
+  subscription Subscription?
 
   createdAt            DateTime       @default(now())
   receivedNotification Notification[] @relation("Recipient")
@@ -39,13 +40,44 @@ model User {
   @@map("users")
 }
 
+
+model Payment {
+  id               String     @id @default(uuid())
+  user             User       @relation(fields: [userId], references: [id])
+  userId           String
+  amount           Float
+  currency         String
+  stripeSessionId  String     @unique
+  status           String     @default("pending")
+  paymentMethod    String?
+  receiptUrl       String?
+  verificationTier String?    // If you have multiple verification tiers
+  createdAt        DateTime   @default(now())
+
+  @@map("payments")
+}
+
+model Subscription {
+  id                   String     @id @default(uuid())
+  user                 User       @relation(fields: [userId], references: [id])
+  userId               String     @unique  // Added @unique for one-to-one relation
+  stripeCustomerId     String     @unique
+  stripeSubscriptionId String     @unique
+  status               String     @default("active")
+  currentPeriodEnd     DateTime
+  planId               String
+  createdAt            DateTime   @default(now())
+  updatedAt            DateTime   @updatedAt
+
+  @@map("subscriptions")
+}
+
+// Rest of your existing models remain unchanged
 model Session {
   id        String   @id
   userId    String
   expiresAt DateTime
-
-  user User @relation(references: [id], fields: [userId], onDelete: Cascade)
-
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
   @@map("sessions")
 }
 
@@ -61,9 +93,7 @@ model Post {
   weatherCode         Int?
   temperature         String?
   linkedNotifications Notification[]
-
-  createdAt DateTime @default(now())
-
+  createdAt           DateTime       @default(now())
   @@map("posts")
 }
 
@@ -73,9 +103,7 @@ model Media {
   Post   Post?     @relation(fields: [postId], references: [id], onDelete: SetNull)
   type   MediaType
   url    String
-
   createdAt DateTime @default(now())
-
   @@map("postmedia")
 }
 
@@ -90,7 +118,6 @@ model Follow {
   follower    User   @relation("Following", fields: [followerId], references: [id], onDelete: Cascade)
   followingId String
   following   User   @relation("Followers", fields: [followingId], references: [id], onDelete: Cascade)
-
   @@unique([followerId, followingId])
   @@map("follows")
 }
@@ -102,9 +129,7 @@ model Comment {
   user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   postId  String
   post    Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
-
   createdAt DateTime @default(now())
-
   @@map("comments")
 }
 
@@ -114,7 +139,6 @@ model Like {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   postId String
   post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
-
   @@unique([userId, postId])
   @@map("likes")
 }
@@ -125,9 +149,7 @@ model Bookmark {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   postId String
   post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
-
   createdAt DateTime @default(now())
-
   @@unique([userId, postId])
   @@map("bookmarks")
 }
@@ -144,7 +166,6 @@ model Notification {
   isRead      Boolean          @default(false)
   content     String?
   createdAt   DateTime         @default(now())
-
   @@map("notifications")
 }
 
@@ -152,4 +173,5 @@ enum NotificationType {
   LIKE
   COMMENT
   FOLLOW
+  PAYMENT // You might want to add payment notifications
 }
