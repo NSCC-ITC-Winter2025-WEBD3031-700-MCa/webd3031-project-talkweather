@@ -9,11 +9,11 @@ generator client {
   previewFeatures = ["fullTextSearch"]
 }
 
+// prisma/schema.prisma
 datasource db {
-  provider = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL")
+  provider  = "postgresql"
+  url  	    = env("DATABASE_URL")
 }
-
 model User {
   id           String     @id @default(uuid())
   username     String     @unique
