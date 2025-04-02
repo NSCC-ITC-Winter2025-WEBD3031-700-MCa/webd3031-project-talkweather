@@ -9,7 +9,7 @@ import Link from "next/link";
 interface Props {
   notification: notificationData;
 }
-
+//making changes 
 const Notification = ({ notification }: Props) => {
   const notificationTypeMap: Record<
     NotificationType,
