@@ -3,7 +3,7 @@ import { notificationData } from "@/lib/types";
 import { cn, formateRelativeDate } from "@/lib/utils";
 import { NotificationType } from "@prisma/client";
 import { AvatarFallback } from "@radix-ui/react-avatar";
-import { Heart, MessageCircle, User } from "lucide-react";
+import { Heart, MessageCircle, User, CreditCard } from "lucide-react";
 import Link from "next/link";
 
 interface Props {
@@ -17,22 +17,28 @@ const Notification = ({ notification }: Props) => {
   > = {
     FOLLOW: {
       message: `${notification.issuer.displayName} started following you`,
-      icon: <User className="sie-7 fill-primary text-primary" />,
+      icon: <User className="size-7 fill-primary text-primary" />,
       href: `/users/${notification.issuer.username}`,
     },
     COMMENT: {
       message: `${notification.issuer.displayName} commented on your post`,
-      icon: <MessageCircle className="sie-7 fill-primary text-primary" />,
+      icon: <MessageCircle className="size-7 fill-primary text-primary" />,
       href: `/posts/${notification.postId}`,
     },
     LIKE: {
       message: `${notification.issuer.displayName} liked your post`,
-      icon: <Heart className="sie-7 fill-red-500 text-red-500" />,
-      href: `/posts/${notification.issuer.username}`,
+      icon: <Heart className="size-7 fill-red-500 text-red-500" />,
+      href: `/posts/${notification.postId}`,
+    },
+    PAYMENT: {
+      message: `${notification.issuer.displayName} completed a payment`,
+      icon: <CreditCard className="size-7 fill-green-500 text-green-500" />,
+      href: `/payments`,
     },
   };
 
   const { href, icon, message } = notificationTypeMap[notification.type];
+  
   return (
     <Link href={href} className="block">
       <article
