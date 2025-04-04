@@ -5,7 +5,7 @@ import { NotificationType } from "@prisma/client";
 import { AvatarFallback } from "@radix-ui/react-avatar";
 import { Heart, MessageCircle, User } from "lucide-react";
 import Link from "next/link";
-
+// need to make changes to this file 
 interface Props {
   notification: notificationData;
 }
