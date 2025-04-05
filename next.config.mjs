@@ -4,6 +4,9 @@ const nextConfig = {
     staleTimes: {
       dynamic: 30,
     },
+    // Add these Prisma-specific settings
+    serverComponentsExternalPackages: ["@prisma/client", "prisma"],
+    serverActions: true, // If using Server Actions
   },
   images: {
     remotePatterns: [
@@ -14,7 +17,13 @@ const nextConfig = {
       },
     ],
   },
-  serverExternalPackages: ["@node-rs/argon2"],
+  // Add this to properly bundle Prisma for serverless
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.externals.push('@prisma/client');
+    }
+    return config;
+  }
 };
 
 export default nextConfig;
