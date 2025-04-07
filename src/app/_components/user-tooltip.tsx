@@ -42,7 +42,7 @@ export default function UserTooltip({ children, user }: UserTooltipProps) {
                     src={user.avatarUrl || ""}
                     alt={user.displayName}
                   />
-                  <AvatarFallback>HW</AvatarFallback>
+                  <AvatarFallback>{user.displayName[0].toUpperCase()}{user.displayName[1].toUpperCase()}</AvatarFallback>
                 </Avatar>
               </Link>
               {loggedInUser.id !== user.id && (

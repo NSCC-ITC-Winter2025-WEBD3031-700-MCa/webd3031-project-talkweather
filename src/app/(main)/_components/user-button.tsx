@@ -35,7 +35,7 @@ const UserButton = ({ className }: Props) => {
         <button className={cn("flex items-center gap-x-2 text-foreground")}>
           <Avatar className="max-h-[35px] max-w-[35px]">
             <AvatarImage src={user.avatarUrl || ""} alt={user.displayName} />
-            <AvatarFallback>HW</AvatarFallback>
+            <AvatarFallback>{user.displayName[0].toUpperCase()}{user.displayName[1].toUpperCase()}</AvatarFallback>
           </Avatar>
           <p className="hidden sm:flex">{user?.displayName}</p>
         </button>

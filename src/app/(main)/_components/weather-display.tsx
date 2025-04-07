@@ -19,10 +19,10 @@ export default function WeatherDisplay() {
   const { data: weather, isLoading, error } = useQuery<WeatherData>({
     queryKey: ["weather"],
     queryFn: fetchWeatherData,
-    staleTime: 1000 * 60 * 30, // 30 minutes stale time
+    staleTime: 1000 * 60 * 30,
   });
 
-  if (isLoading) return <div className="h-16 w-32 animate-pulse bg-gray-200 rounded" />;
+  if (isLoading) return <div className="h-8 w-64 animate-pulse bg-gray-200 rounded" />;
   if (error || !weather) return null;
 
   const wmoCode = weather.weather_code.toString() as keyof typeof wmoCodes;
