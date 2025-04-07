@@ -2,7 +2,7 @@ import wmoCodes from '@/data/wmo-codes.json';
 
 export interface WeatherData {
   temperature: string;
-  weather_code: number;
+  weatherCode: number;
   fetched_at: string;
 }
 
