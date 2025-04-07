@@ -1,6 +1,7 @@
 import { validateRequest } from "@/auth";
 import { redirect } from "next/navigation";
-import AdminDashboard from "./_components/admin-dashboard";
+import { AdminDashboard } from "./_components/admin-dashboard";
+import { getDashboardStats } from "@/app/_services/stats.service";
 
 export default async function AdminPage() {
   const { user } = await validateRequest();
@@ -9,5 +10,7 @@ export default async function AdminPage() {
     redirect("/");
   }
 
-  return <AdminDashboard />;
+  const initialStats = await getDashboardStats();
+
+  return <AdminDashboard initialStats={initialStats} />;
 }

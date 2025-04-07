@@ -16,7 +16,7 @@ export const loginSchema = z.object({
   password: requiredString,
 });
 
-export const postSchema = z.object({
+export const postWithWeatherSchema = z.object({
   content: requiredString,
   mediaIds: z.array(z.string()).max(5, "Can't have more then 5 attachments"),
 });
