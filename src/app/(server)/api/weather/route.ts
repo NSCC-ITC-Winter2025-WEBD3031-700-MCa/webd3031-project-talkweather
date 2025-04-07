@@ -11,7 +11,7 @@ export async function GET() {
 
     return NextResponse.json({
       temperature: `${data.current.temperature_2m}${data.current_units.temperature_2m}`,
-      weather_code: data.current.weather_code,
+      weatherCode: data.current.weather_code,
       fetched_at: new Date().toISOString()
     });
   } catch (error) {

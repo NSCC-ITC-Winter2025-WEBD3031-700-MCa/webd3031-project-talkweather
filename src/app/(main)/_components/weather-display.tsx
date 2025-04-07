@@ -6,7 +6,7 @@ import wmoCodes from '@/data/wmo-codes.json';
 
 interface WeatherData {
   temperature: string;
-  weather_code: number;
+  weatherCode: number;
   fetched_at: string;
 }
 
@@ -25,7 +25,7 @@ export default function WeatherDisplay() {
   if (isLoading) return <div className="h-8 w-64 animate-pulse bg-gray-200 rounded" />;
   if (error || !weather) return null;
 
-  const wmoCode = weather.weather_code.toString() as keyof typeof wmoCodes;
+  const wmoCode = weather.weatherCode.toString() as keyof typeof wmoCodes;
   const weatherInfo = wmoCodes[wmoCode];
 
   return (
