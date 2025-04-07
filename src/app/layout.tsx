@@ -8,6 +8,8 @@ import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "./(server)/api/uploadthing/core";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Analytics } from '@vercel/analytics/react';
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -42,6 +44,8 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               {children}
+              <Analytics /> 
+              <GoogleAnalytics gaId="G-Y1BNHDWESM" />
               <Toaster />
             </ThemeProvider>
           </ReactQueryProvider>
