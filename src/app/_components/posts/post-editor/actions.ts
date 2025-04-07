@@ -5,12 +5,13 @@ import { getPostDataInclude } from "@/lib/types";
 import { postSchema } from "@/lib/validation";
 import * as z from "zod";
 
+// Extend your post schema to include weather fields
 const postWithWeatherSchema = postSchema.extend({
   weatherCode: z.number().optional(),
   temperature: z.string().optional()
 });
 
-export async function createPost(values: z.infer<typeof postWithWeatherSchema>) {
+export async function createPost(values: z.infer<typeof postSchema>) {
   const { user } = await validateRequest();
 
   if (!user) {
