@@ -25,7 +25,7 @@ const Comment = ({ comment }: Props) => {
             src={comment.user.avatarUrl || ""}
             alt={comment.user.displayName}
           />
-          <AvatarFallback>HW</AvatarFallback>
+          <AvatarFallback>{comment.user.displayName[0].toUpperCase()}{comment.user.displayName[1].toUpperCase()}</AvatarFallback>
         </Avatar>
       </UserTooltip>
       {/* Content */}

@@ -39,7 +39,7 @@ const Post = ({ post }: Props) => {
                   src={post.user.avatarUrl || ""}
                   alt={post.user.displayName}
                 />
-                <AvatarFallback>HW</AvatarFallback>
+                <AvatarFallback>{post.user.displayName[0].toUpperCase()}{post.user.displayName[1].toUpperCase()}</AvatarFallback>
               </Avatar>
             </Link>
           </UserTooltip>
