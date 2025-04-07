@@ -25,7 +25,7 @@ export async function createPost(values: z.infer<typeof postSchema>) {
   }
 
   // Fetch current weather data
-  let weatherData: { weatherCode?: number; temperature?: string } = {};
+  let weatherData: { weather_code?: number; temperature?: string } = {};
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/weather`);
     if (response.ok) {
@@ -39,7 +39,7 @@ export async function createPost(values: z.infer<typeof postSchema>) {
     data: {
       content,
       userId: user.id,
-      ...(weatherData.weatherCode && { weatherCode: weatherData.weatherCode }),
+      ...(weatherData.weather_code && { weatherCode: weatherData.weather_code }),
       ...(weatherData.temperature && { temperature: weatherData.temperature }),
       attachments: {
         connect: mediaIds.map((id) => ({ id })),
