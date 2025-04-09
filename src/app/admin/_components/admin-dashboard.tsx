@@ -53,7 +53,8 @@ export function AdminDashboard({ initialStats }: AdminDashboardProps) {
         <Button>← Back</Button>
       </Link>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+      <h1 className="text-xl my-4 mt-2">Post Stats</h1>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Posts</CardTitle>
@@ -98,7 +99,18 @@ export function AdminDashboard({ initialStats }: AdminDashboardProps) {
             <div className="text-2xl font-bold">{formatNumber(stats.posts.daily)}</div>
           </CardContent>
         </Card>
-        
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Last Hour</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{formatNumber(stats.posts.hourly)}</div>
+          </CardContent>
+        </Card>
+      </div>
+      <h1 className="text-xl my-4 mt-2">User Stats</h1>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Users</CardTitle>
@@ -141,6 +153,15 @@ export function AdminDashboard({ initialStats }: AdminDashboardProps) {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatNumber(stats.users.daily)}</div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Last Hour</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{formatNumber(stats.users.hourly)}</div>
           </CardContent>
         </Card>
       </div>
