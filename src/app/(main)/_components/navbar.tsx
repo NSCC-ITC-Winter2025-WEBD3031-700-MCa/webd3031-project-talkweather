@@ -1,6 +1,5 @@
 import Link from "next/link";
 import UserButton from "./user-button";
-import SearchBox from "./search-box";
 import WeatherDisplay from "./weather-display";
 import { validateRequest } from "@/auth";
 
@@ -15,7 +14,6 @@ const Navbar = async ({}: Props) => {
           <Link href="/" className="font-mono text-2xl font-bold leading-[1]">
             <span className="text-primary">HALI</span>WEATHER
           </Link>
-          <SearchBox />
           <WeatherDisplay />
         </div>
 
