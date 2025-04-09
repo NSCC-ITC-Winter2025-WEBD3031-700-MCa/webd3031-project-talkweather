@@ -12,6 +12,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl  = env("DATABASE_URL_UNPOOLED") // ✅ Add this line
 }
 
 model User {
@@ -22,6 +23,7 @@ model User {
   avatarUrl    String?
   passwordHash String?
   googleId     String?    @unique
+  githubId     String?    @unique // ✅ Add this line
   bio          String?
   sessions     Session[]
   posts        Post[]
