@@ -28,7 +28,7 @@ jobs:
       run: pnpm run start &
       
     - name: Wait for server to start
-      run: sleep 100
+      run: npx wait-on http://localhost:3000
 
     - name: Test for 500 errors
       run: |
