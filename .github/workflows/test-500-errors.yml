@@ -19,13 +19,13 @@ jobs:
         node-version: '22'
 
     - name: install dependencies
-      run: pnpm install
+      run: npm install
 
     - name: build app
-      run: pnpm run build
+      run: npm run build
 
     - name: Start production server in background
-      run: pnpm run start &
+      run: npm run start &
       
     - name: Wait for server to start
       run: npx wait-on http://localhost:3000
