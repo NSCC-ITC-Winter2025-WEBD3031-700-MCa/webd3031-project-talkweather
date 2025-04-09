@@ -20,8 +20,8 @@ jobs:
 
     - name: install dependencies
       run: |
-      npm install
-      npm install next@latest
+        npm install next@15.0.0-rc.0
+        npm install --force
 
     - name: build app
       run: npm run build
