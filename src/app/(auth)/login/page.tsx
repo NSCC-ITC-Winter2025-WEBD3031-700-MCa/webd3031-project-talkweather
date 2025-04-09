@@ -1,5 +1,4 @@
 import LoginForm from "@/app/(auth)/login/login-form";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -10,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Metadata } from "next";
 import Link from "next/link";
+import GitHubLoginButton from "./GitHubLoginButton"; // Import the Client Component
 
 export const metadata: Metadata = {
   title: "Login",
@@ -33,6 +33,9 @@ const Login = async ({}: Props) => {
         </CardHeader>
         <CardContent className="flex flex-col items-center">
           <LoginForm />
+          
+          {/* Use the GitHub Login Button */}
+          <GitHubLoginButton /> {/* This is the Client Component */}
         </CardContent>
         <CardFooter className="flex items-center justify-center gap-1 text-[12px]">
           <p>Don&apos;t have an account?</p>
