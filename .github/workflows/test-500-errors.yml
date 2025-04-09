@@ -18,10 +18,8 @@ jobs:
       with:
         node-version: '22'
 
-    - name: install dependencies
-      run: |
-        npm install next@15.0.0-rc.0
-        npm install --force
+    - name: Install dependencies
+      run: npm install --legacy-peer-deps
 
     - name: build app
       run: npm run build
