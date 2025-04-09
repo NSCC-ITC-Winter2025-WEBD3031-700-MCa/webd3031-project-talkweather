@@ -1,0 +1,44 @@
+name: Test for 500 Errors
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-500-errors:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '22'
+
+    - name: install dependencies
+      run: pnpm install
+
+    - name: build app
+      run: pnpm run build
+
+    - name: Start production server in background
+      run: pnpm run start &
+      
+    - name: Wait for server to start
+      run: sleep 100
+
+    - name: Test for 500 errors
+      run: |
+        SERVER_URL="http://localhost:3000"
+        
+        ROUTES=("/api/weather")
+        
+        for route in "${ROUTES[@]}"; do
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$SERVER_URL$route")
+          if [ $STATUS -eq 500 ]; then
+            echo "ERROR: Route $route returned 500"
+          fi
+        done
