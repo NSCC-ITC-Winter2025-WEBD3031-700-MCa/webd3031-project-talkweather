@@ -12,10 +12,61 @@ interface AdminDashboardProps {
   initialStats?: DashboardStats;
 }
 
+interface UserListProps {
+  id: string;
+  username: string;
+  displayName: string;
+  avatarUrl: string | null;
+}
+
 export function AdminDashboard({ initialStats }: AdminDashboardProps) {
   const [stats, setStats] = useState<DashboardStats | null>(initialStats || null);
   const [loading, setLoading] = useState(!initialStats);
   const [error, setError] = useState<string | null>(null);
+  const [users, setUsers] = useState<UserListProps[]>([]);
+  const [usersLoading, setUsersLoading] = useState(false);
+  const [usersError, setUsersError] = useState<string | null>(null);
+
+  const fetchUsers = async () => {
+    setUsersLoading(true);
+    setUsersError(null);
+    try {
+      const response = await fetch('/api/users');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to fetch users');
+      }
+      const data = await response.json();
+      setUsers(data.data.users);
+    } catch (err) {
+      console.error("Failed to fetch users:", err);
+      setUsersError(err instanceof Error ? err.message : "Failed to load users");
+    } finally {
+      setUsersLoading(false);
+    }
+  };
+
+  const handleDeleteUser = async (userId: string) => {
+    if (!confirm("Are you sure you want to delete this user? This action cannot be undone.")) return;
+    
+    try {
+      const response = await fetch(`/api/users/${userId}`, {
+        method: 'DELETE'
+      });
+      
+      const result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.message || 'Failed to delete user');
+      }
+      
+      await fetchUsers();
+      alert(result.message || "User deleted successfully");
+    } catch (err) {
+      console.error("Failed to delete user:", err);
+      alert(err instanceof Error ? err.message : "Failed to delete user");
+    }
+  };
 
   useEffect(() => {
     if (!initialStats) {
@@ -32,6 +83,8 @@ export function AdminDashboard({ initialStats }: AdminDashboardProps) {
       }
       fetchStats();
     }
+    
+    fetchUsers();
   }, [initialStats]);
 
   if (loading) {
@@ -109,6 +162,7 @@ export function AdminDashboard({ initialStats }: AdminDashboardProps) {
           </CardContent>
         </Card>
       </div>
+      
       <h1 className="text-xl my-4 mt-2">User Stats</h1>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>
@@ -162,6 +216,55 @@ export function AdminDashboard({ initialStats }: AdminDashboardProps) {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatNumber(stats.users.hourly)}</div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <h1 className="text-xl my-4 mt-2">User Management</h1>
+      <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-1">
+        <Card>
+          <CardHeader>
+            <CardTitle>All Users</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {usersLoading ? (
+              <div>Loading users...</div>
+            ) : usersError ? (
+              <div className="text-red-500">{usersError}</div>
+            ) : users.length === 0 ? (
+              <div>No users found</div>
+            ) : (
+              <div className="space-y-3">
+                {users.map((user) => (
+                  <div key={user.id} className="flex items-center justify-between gap-3 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">
+                    <div className="flex items-center gap-2">
+                      {user.avatarUrl ? (
+                        <img 
+                          src={user.avatarUrl} 
+                          alt={user.displayName}
+                          className="h-8 w-8 rounded-full"
+                        />
+                      ) : (
+                        <div className="h-8 w-8 rounded-full bg-gray-300 dark:bg-gray-700 flex items-center justify-center">
+                          {user.displayName[0]?.toUpperCase()}{user.displayName[1]?.toUpperCase()}
+                        </div>
+                      )}
+                      <div>
+                        <p className="font-medium">{user.displayName}</p>
+                        <p className="text-sm text-muted-foreground">@{user.username}</p>
+                      </div>
+                    </div>
+                    <Button 
+                      variant="destructive" 
+                      size="sm"
+                      onClick={() => handleDeleteUser(user.id)}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
