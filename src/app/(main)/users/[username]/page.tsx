@@ -110,9 +110,16 @@ async function UserProfile({ user, loggedInUserId }: userProfileProps) {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="me-auto space-y-3">
           <div>
-            <h1 className="text-3xl font-semibold dark:text-white">
-              {user.displayName}
-            </h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-3xl font-semibold dark:text-white">
+                {user.displayName}
+              </h1>
+              {user.isVerified && (
+                <span className="px-2 py-0.5 rounded-full bg-yellow-400 text-sm font-semibold text-black">
+                  ✅ Verified
+                </span>
+              )}
+            </div>
             <div className="text-muted-foreground">@{user.username}</div>
           </div>
           <div>Member since {formatDate(user.createdAt, "MMM d, yyyy")}</div>
@@ -129,7 +136,6 @@ async function UserProfile({ user, loggedInUserId }: userProfileProps) {
                 className="font-semibold"
                 initialState={{
                   followers: followerInfo.followers,
-
                   isFollowedByUser: followerInfo?.isFollowedByUser,
                 }}
                 userId={user?.id}
