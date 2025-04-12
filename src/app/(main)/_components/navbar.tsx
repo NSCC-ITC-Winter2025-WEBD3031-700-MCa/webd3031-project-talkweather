@@ -17,26 +17,7 @@ const Navbar = async ({}: Props) => {
           <WeatherDisplay />
         </div>
 
-        {(() => {
-          if (user?.role === "ADMIN") {
-              return (
-                  <Link href="/admin">
-                      <button className="px-4 py-1 rounded-full bg-gray-600 text-white text-lg font-semibold shadow-md hover:bg-blue-700 transition">
-                          Admin
-                      </button>
-                  </Link>
-              );
-          } else if (user?.role !== "ADMIN" && user?.role !== "PREMIUM") {
-              return (
-                  <Link href="/pricing">
-                      <button className="px-4 py-1 rounded-full bg-blue-600 text-white text-lg font-semibold shadow-md hover:bg-blue-700 transition">
-                          Upgrade
-                      </button>
-                  </Link>
-              );
-          }
-          return null;
-      })()}
+        
 
         <div className="flex items-center">
           <UserButton />

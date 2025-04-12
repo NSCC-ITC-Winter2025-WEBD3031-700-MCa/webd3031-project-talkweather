@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import SessionProvider from "@/app/(main)/_providers/session-provider";
 import Navbar from "./_components/navbar";
 import MenuBar from "./_components/menu-bar";
-import Link from "next/link";
 
 export default async function MainLayout({
   children,
@@ -17,10 +16,8 @@ export default async function MainLayout({
   return (
     <SessionProvider value={session}>
       <div className="flex min-h-screen flex-col items-center">
-        {/* Navbar with Pricing Button */}
         <div className="w-full flex justify-between items-center px-5 py-3 bg-card shadow-md">
           <Navbar />
-          {/* Long Oval Button for Pricing */}
           
         </div>
 
