@@ -10,11 +10,17 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "utfs.io",
-        pathname: "/f/**", // ✅ allow standard UploadThing URLs
+        pathname: "/f/**",
+      },
+      {
+        protocol: "https",
+        hostname: "*.ufs.sh", 
+        pathname: "/f/**",
       },
     ],
   },
   serverExternalPackages: ["@node-rs/argon2"],
 };
-
+ 
 export default nextConfig;
+ 
