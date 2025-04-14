@@ -12,7 +12,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  directUrl  = env("DATABASE_URL_UNPOOLED") // ✅ Add this line
+  directUrl  = env("DATABASE_URL_UNPOOLED")
 }
  
 model User {
@@ -23,7 +23,7 @@ model User {
   avatarUrl    String?
   passwordHash String?
   googleId     String?    @unique
-  githubId     String?    @unique // ✅ Add this line
+  githubId     String?    @unique
   bio          String?
   sessions     Session[]
   posts        Post[]
@@ -40,7 +40,7 @@ model User {
 
   isVerified   Boolean   @default(false) 
   verifiedSince DateTime?
- 
+
   @@map("users")
 }
  
@@ -158,3 +158,4 @@ enum NotificationType {
   COMMENT
   FOLLOW
 }
+ 
