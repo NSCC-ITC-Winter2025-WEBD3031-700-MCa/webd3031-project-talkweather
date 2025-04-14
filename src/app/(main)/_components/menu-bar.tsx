@@ -65,7 +65,7 @@ const MenuBar = async ({ className }: Props) => {
               </Link>
             </Button>
           );
-      } if (user?.role !== "ADMIN" && !(user?.isVerified)) {
+      } if (!(user?.isVerified)) {
           return (
             <Button
             variant={"ghost"}
