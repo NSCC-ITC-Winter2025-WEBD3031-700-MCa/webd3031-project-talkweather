@@ -1,5 +1,8 @@
 import { Prisma } from "@prisma/client";
+import prisma from "@/lib/prisma";
 
+
+///new commit just need to push
 export function getUserDataSelect(loggedInUserId: string) {
   return {
     id: true,
@@ -8,6 +11,7 @@ export function getUserDataSelect(loggedInUserId: string) {
     avatarUrl: true,
     bio: true,
     createdAt: true,
+    isVerified: true,
     followers: {
       where: {
         followerId: loggedInUserId,
