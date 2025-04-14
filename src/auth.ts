@@ -29,7 +29,8 @@ export const lucia = new Lucia(adapter, {
 			displayName: databaseUserAttributes.displayName,
 			avatarUrl: databaseUserAttributes.avatarUrl,
 			githubId: databaseUserAttributes.githubId,
-			role: databaseUserAttributes.role
+			role: databaseUserAttributes.role,
+			isVerified: databaseUserAttributes.isVerified,
 		};
 	}
 });
@@ -71,6 +72,7 @@ interface DatabaseUserAttributes {
 	avatarUrl: string | null;
 	githubId: string | null;
 	role: string;
+	isVerified: boolean,
 }
 
 declare module "lucia" {
