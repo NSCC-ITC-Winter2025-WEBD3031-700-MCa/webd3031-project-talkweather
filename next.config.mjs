@@ -14,8 +14,13 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "*.ufs.sh", // ✅ wildcard to catch any UploadThing CDN
+        hostname: "*.ufs.sh",
         pathname: "/f/**",
+      },
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com", // ✅ GitHub avatars
+        pathname: "/u/**",
       },
     ],
   },
