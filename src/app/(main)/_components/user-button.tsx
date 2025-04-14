@@ -48,7 +48,6 @@ const UserButton = ({ className }: Props) => {
             <DropdownMenuItem className="!cursor-pointer">
               <User className="mr-2 h-4 w-4" />
               <span>Profile</span>
-              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
             </DropdownMenuItem>
           </Link>
         </DropdownMenuGroup>
@@ -57,7 +56,6 @@ const UserButton = ({ className }: Props) => {
             <DropdownMenuItem className="!cursor-pointer">
               <ColorWheelIcon className="mr-2 h-4 w-4" />
               <span>Theme</span>
-              <DropdownMenuShortcut>⇧⌘T</DropdownMenuShortcut>
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </ModeToggle>
@@ -72,7 +70,6 @@ const UserButton = ({ className }: Props) => {
         >
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
