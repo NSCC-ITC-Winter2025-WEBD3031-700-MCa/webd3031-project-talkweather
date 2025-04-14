@@ -14,12 +14,13 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "*.ufs.sh", // ✅ wildcard to catch any UploadThing CDN
+        hostname: "*.ufs.sh", 
         pathname: "/f/**",
       },
     ],
   },
   serverExternalPackages: ["@node-rs/argon2"],
 };
-
+ 
 export default nextConfig;
+ 
