@@ -184,3 +184,25 @@
 .str-chat__quoted-message-bubble__text {
   @apply !text-[15px];
 }
+
+.verified {
+  background-color: blueviolet !important;
+}
+
+.verified {
+  background: linear-gradient(300deg,deepskyblue,darkviolet,blue) !important;
+  background-size: 180% 180% !important;
+  animation: gradient-animation 5s ease infinite !important;
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50% !important;
+  }
+  50% {
+    background-position: 100% 50% !important;
+  }
+  100% {
+    background-position: 0% 50% !important;
+  }
+}

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Bookmark, Home, Badge, CircleUserRound} from "lucide-react";
+import { Bookmark, Home, Badge, CircleUserRound } from "lucide-react";
 import Link from "next/link";
 import NotificationButton from "./notification-button";
 import { validateRequest } from "@/auth";
@@ -26,7 +26,7 @@ const MenuBar = async ({ className }: Props) => {
     <div className={cn("", className)}>
       <Button
         variant={"ghost"}
-        className={`flex items-center justify-start gap-3`}
+        className={"flex items-center justify-start gap-3"}
         title="Home"
         asChild
       >
@@ -40,7 +40,7 @@ const MenuBar = async ({ className }: Props) => {
       />
       <Button
         variant={"ghost"}
-        className={`flex items-center justify-start gap-3`}
+        className={"flex items-center justify-start gap-3"}
         title="Bookmarks"
         asChild
       >
@@ -49,51 +49,46 @@ const MenuBar = async ({ className }: Props) => {
           <span className="hidden lg:inline">Bookmarks</span>
         </Link>
       </Button>
-
-      {(() => {
-      if (user?.role === "ADMIN") {
-          return (
-            <Button
-              variant={"ghost"}
-              className={`flex items-center justify-start gap-3`}
-              title="AdminDashboard"
-              asChild
-            >
-              <Link href={"/admin"}>
-                <CircleUserRound />
-                <span className="hidden lg:inline">Admin Dashboard</span>
-              </Link>
-            </Button>
-          );
-      } if (!(user?.isVerified)) {
-          return (
-            <Button
-            variant={"ghost"}
-            className={`flex items-center justify-start gap-3`}
-            title="Upgrade"
-            asChild
-          >
-            <Link href={"/pricing"}>
-              <Badge />
-              <span className="hidden lg:inline">Upgrade</span>
-            </Link>
-          </Button>
-          );
-      }
-      return (
+      
+      {user?.role === "ADMIN" && (
         <Button
-        variant={"ghost"}
-        className={`flex items-center justify-start gap-3`}
-        title="ManageMembership"
-        asChild
-      >
-        <Link href={"/pricing"}>
-          <Badge />
-          <span className="hidden lg:inline">Manage Membership</span>
-        </Link>
-      </Button>
-      );
-    })()}
+          variant={"ghost"}
+          className={"flex items-center justify-start gap-3"}
+          title="AdminDashboard"
+          asChild
+        >
+          <Link href={"/admin"}>
+            <CircleUserRound />
+            <span className="hidden lg:inline">Admin Dashboard</span>
+          </Link>
+        </Button>
+      )}
+      
+      {!user?.isVerified ? (
+        <Button
+          variant={"ghost"}
+          className={"flex items-center justify-start gap-3"}
+          title="Upgrade"
+          asChild
+        >
+          <Link href={"/pricing"}>
+            <Badge />
+            <span className="hidden lg:inline">Upgrade</span>
+          </Link>
+        </Button>
+      ) : (
+        <Button
+          variant={"ghost"}
+          className={"flex items-center justify-start gap-3"}
+          title="ManageMembership"
+          asChild
+        >
+          <Link href={"/pricing"}>
+            <Badge />
+            <span className="hidden lg:inline">Manage Membership</span>
+          </Link>
+        </Button>
+      )}
     </div>
   );
 };
