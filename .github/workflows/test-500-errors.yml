@@ -1,4 +1,4 @@
-name: Test for 500 Errors
+name: Test API Routes
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  test-500-errors:
+  test-api-routes:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,29 +16,37 @@ jobs:
     - name: Use Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '22'
+        node-version: '20'  # Next.js works best with Node 18/20
 
     - name: Install dependencies
-      run: npm install --legacy-peer-deps
+      run: npm install
 
-    - name: build app
-      run: npm run build
-
-    - name: Start production server in background
-      run: npm run start &
+    - name: Start Next.js dev server in background
+      run: npm run dev &
       
     - name: Wait for server to start
       run: npx wait-on http://localhost:3000
 
-    - name: Test for 500 errors
+    - name: Test API endpoints
       run: |
-        SERVER_URL="http://localhost:3000"
+        SERVER_URL="http://localhost:3000/api"
         
-        ROUTES=("/api/weather")
+        # List all API routes you want to test
+        ROUTES=(
+          "/weather"
+          "/posts/for-you"
+          "/notifications"
+          "/users"
+        )
         
         for route in "${ROUTES[@]}"; do
+          echo "Testing $route..."
           STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$SERVER_URL$route")
+          
           if [ $STATUS -eq 500 ]; then
-            echo "ERROR: Route $route returned 500"
+            echo "❌ ERROR: Route $route returned 500"
+            exit 1
+          else
+            echo "✅ $route returned $STATUS"
           fi
         done
