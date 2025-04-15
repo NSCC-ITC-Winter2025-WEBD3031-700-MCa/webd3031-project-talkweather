@@ -16,10 +16,10 @@ jobs:
     - name: Use Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '20'  # Next.js works best with Node 18/20
+        node-version: '20'  
 
     - name: Install dependencies
-      run: npm install
+      run: npm install --legacy-peer-deps
 
     - name: Start Next.js dev server in background
       run: npm run dev &
@@ -44,9 +44,9 @@ jobs:
           STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$SERVER_URL$route")
           
           if [ $STATUS -eq 500 ]; then
-            echo "❌ ERROR: Route $route returned 500"
+            echo "ERROR: Route $route returned 500"
             exit 1
           else
-            echo "✅ $route returned $STATUS"
+            echo "$route returned $STATUS"
           fi
         done
