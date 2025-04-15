@@ -2,7 +2,7 @@ import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError, UTApi } from "uploadthing/server";
-import streamServerClient from "@/lib/stream";
+import streamServerClient from "@/lib/stream"; // Only use if properly connected
 
 const f = createUploadthing();
 
@@ -14,25 +14,40 @@ export const ourFileRouter = {
       return { user };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      const prevAvatar = metadata.user.avatarUrl;
+      const prevAvatar = metadata.user.avatarUrl ?? undefined;
 
-      if (prevAvatar) {
-        const key = prevAvatar.split("/f/")[1]; // ✅ fix split logic
-        await new UTApi().deleteFiles(key);
+      // ✅ Only delete if previous avatar is from UploadThing
+      if (
+        prevAvatar &&
+        (prevAvatar.includes("utfs.io") || prevAvatar.includes("ufs.sh"))
+      ) {
+        const key = prevAvatar.split("/f/")[1];
+        if (key) {
+          try {
+            await new UTApi().deleteFiles(key);
+          } catch (err) {
+            console.error("❌ Failed to delete previous avatar:", err);
+          }
+        }
       }
 
-      const newAvatarURL = file.url; // ✅ keep original
+      const newAvatarURL = file.url;
 
-      await Promise.all([
-        prisma.user.update({
-          where: { id: metadata.user.id },
-          data: { avatarUrl: newAvatarURL },
-        }),
-        streamServerClient.partialUpdateUser({
+      // ✅ Safe avatar update in DB
+      await prisma.user.update({
+        where: { id: metadata.user.id },
+        data: { avatarUrl: newAvatarURL },
+      });
+
+      // ⚠️ Skip Stream update if not connected properly
+      try {
+        await streamServerClient.partialUpdateUser({
           id: metadata.user.id,
           set: { image: newAvatarURL },
-        }),
-      ]);
+        });
+      } catch (err) {
+        console.warn("⚠️ Stream update skipped (token probably missing):", err);
+      }
 
       return { avatarUrl: newAvatarURL };
     }),
@@ -46,7 +61,7 @@ export const ourFileRouter = {
     .onUploadComplete(async ({ file }) => {
       const media = await prisma.media.create({
         data: {
-          url: file.url, // ✅ do not modify the URL
+          url: file.url,
           type: file.type.startsWith("image") ? "IMAGE" : "VIDEO",
         },
       });

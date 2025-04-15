@@ -14,13 +14,17 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "*.ufs.sh", 
+        hostname: "*.ufs.sh",
         pathname: "/f/**",
+      },
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+        pathname: "/u/**", // GitHub avatars
       },
     ],
   },
   serverExternalPackages: ["@node-rs/argon2"],
 };
- 
+
 export default nextConfig;
- 
