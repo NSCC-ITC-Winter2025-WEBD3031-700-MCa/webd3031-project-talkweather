@@ -13,7 +13,7 @@ import { formatNumber } from "@/lib/utils";
 import FollowerCount from "../../_components/follower-count";
 import { Button } from "@/components/ui/button";
 import ProfilePagePosts from "../../_components/profile-page.posts";
-import { User } from "lucide-react";
+import { User, BadgeCheck } from "lucide-react";
 import Image from "next/image";
 import LinkifyContent from "@/app/_components/linkify-content";
 import EditProfileButton from "./edit-profile-button";
@@ -110,16 +110,19 @@ async function UserProfile({ user, loggedInUserId }: userProfileProps) {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="me-auto space-y-3">
           <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-3xl font-semibold dark:text-white">
-                {user.displayName}
-              </h1>
+          <div className="flex items-center gap-2">
+            <h1 className="text-3xl font-semibold dark:text-white flex items-center gap-2">
+              {user.displayName}
               {user.isVerified && (
-                <span className="px-2 py-0.5 rounded-full bg-yellow-400 text-sm font-semibold text-black">
-                  ✅ Verified
-                </span>
+                <BadgeCheck className="h-6 w-6" />
               )}
-            </div>
+            </h1>
+            {user.isVerified && (
+              <span className="px-2 py-0.5 rounded-full bg-yellow-400 text-sm font-semibold text-black">
+                Verified
+              </span>
+            )}
+          </div>
             <div className="text-muted-foreground">@{user.username}</div>
           </div>
           <div>Member since {formatDate(user.createdAt, "MMM d, yyyy")}</div>

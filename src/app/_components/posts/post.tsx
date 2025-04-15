@@ -15,7 +15,7 @@ import { useState } from "react";
 import LikeButton from "@/app/(main)/_components/like-button";
 import BookMarkButton from "@/app/(main)/_components/bookmark-button";
 import Comments from "../comments/comments";
-import { MessageSquare } from "lucide-react";
+import { BadgeCheck, MessageSquare } from "lucide-react";
 import CreateComment from "@/app/_components/comments/create-comment";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { getWeatherInfo } from "@/lib/weather";
@@ -28,7 +28,10 @@ const Post = ({ post }: Props) => {
   const { user } = useSession();
   const [showComments, setShowComments] = useState(false);
   return (
-    <article className="group/post space-y-3 rounded-2xl bg-card p-4 shadow-md dark:border sm:p-5">
+    <article className={cn(
+      "group/post space-y-3 rounded-2xl bg-card p-4 shadow-md dark:border sm:p-5",
+      post.user.isVerified && "verified"
+    )}>
       <div className="flex items-center justify-between gap-3">
         {/* Post user info  */}
         <div className="flex flex-wrap gap-3">
@@ -51,6 +54,9 @@ const Post = ({ post }: Props) => {
               >
                 {post.user.displayName}
               </Link>
+              {post.user.isVerified &&(
+                <BadgeCheck className="mx-2" />
+              )}
               {/* Weather display */}
               {post.weatherCode ? (
                 <div className="flex items-center ml-2 gap-1">
