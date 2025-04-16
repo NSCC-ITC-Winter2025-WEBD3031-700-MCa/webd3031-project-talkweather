@@ -9,18 +9,11 @@ export async function GET() {
     );
     const data = await response.json();
 
-    if(data.current.weather_code===0){
-      return NextResponse.json({
-        temperature: `${data.current.temperature_2m}${data.current_units.temperature_2m}`,
-        weatherCode: 1,
-        fetched_at: new Date().toISOString()
-      });
-    }else{return NextResponse.json({
+    return NextResponse.json({
       temperature: `${data.current.temperature_2m}${data.current_units.temperature_2m}`,
       weatherCode: data.current.weather_code,
       fetched_at: new Date().toISOString()
-    });}
-    
+    });
   } catch (error) {
     return NextResponse.json(
       { error: 'Failed to fetch weather data' },
