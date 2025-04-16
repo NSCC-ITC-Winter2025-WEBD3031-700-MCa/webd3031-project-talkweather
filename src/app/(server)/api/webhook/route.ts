@@ -41,15 +41,7 @@ export async function POST(req: NextRequest) {
     const session = event.data.object as Stripe.Checkout.Session;
     const userId = session.client_reference_id;
 
-    if (userId) {
-      await prisma.user.update({
-        where: { id: userId },
-        data: {
-          isVerified: true,
-          verifiedSince: new Date(),
-        },
-      });
-    }
+    console.log(userId);
   }
 
   return new Response(JSON.stringify({ received: true }), { status: 200 });
