@@ -39,7 +39,7 @@ export async function createPost(values: z.infer<typeof postSchema>) {
     data: {
       content,
       userId: user.id,
-      weatherCode: 1,
+      ...(weatherData.weatherCode && { weatherCode: weatherData.weatherCode }),
       ...(weatherData.temperature && { temperature: weatherData.temperature }),
       attachments: {
         connect: mediaIds.map((id) => ({ id })),
