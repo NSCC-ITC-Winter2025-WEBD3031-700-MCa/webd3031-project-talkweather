@@ -60,6 +60,7 @@ export async function login(
       sessionCookie.attributes
     );
     return redirect("/");
+    
   } catch (error) {
     console.log(error);
     if (isRedirectError(error)) throw error;
