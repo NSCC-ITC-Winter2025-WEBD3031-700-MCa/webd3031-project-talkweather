@@ -77,7 +77,7 @@ export async function register(
       sessionCookie.value,
       sessionCookie.attributes
     );
-    return redirect("/");
+    redirect("/");
   } catch (error) {
     console.log(error);
     if (isRedirectError(error)) throw error;
